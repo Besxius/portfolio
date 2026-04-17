@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  /* Default theme is blue (slate blue) */
+  :root[data-color-theme='blue'] {
+    --primary: 198 83% 53%;
+    --primary-foreground: 210 40% 15%;
+  }
+
+  /* Green theme is now mint/cyan like the image */
+  :root[data-color-theme='green'] {
+    --primary: 166 80% 71%;
+    --primary-foreground: 210 40% 15%;
+  }
+
+  /* Force the default dark theme logic to match the slate background from the image */
+  .dark {
+    --background: 216 19% 15%; /* #1e242c */
+    --foreground: 210 40% 98%;
+    --card: 214 16% 22%; /* #2f3640 */
+    --card-foreground: 210 40% 98%;
+    --popover: 216 19% 15%;
+    --popover-foreground: 210 40% 98%;
+    --muted: 216 16% 25%;
+    --muted-foreground: 215 20.2% 75.1%;
+    --border: 216 16% 25%;
+    --input: 216 16% 25%;
+    --ring: var(--primary);
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    background-image: 
+      radial-gradient(ellipse at top left, hsl(var(--primary) / 0.15), transparent 50%),
+      radial-gradient(ellipse at bottom right, hsl(var(--primary) / 0.1), transparent 50%),
+      radial-gradient(ellipse at center, hsl(var(--background)), transparent 100%);
+    background-attachment: fixed;
+    color: hsl(var(--foreground));
+    transition: background-color 300ms, color 300ms;
+  }
+}
