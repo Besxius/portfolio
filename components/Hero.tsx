@@ -83,7 +83,7 @@ export function Hero({ initialProfile }: { initialProfile: any }) {
     if (isDragging) { setIsDragging(false); e.currentTarget.releasePointerCapture(e.pointerId); }
   };
 
-  const displayFullName = profile.full_name || "Le Duc Trong";
+  const displayFullName = language === 'vi' ? (profile.full_name_vi || profile.full_name || "Lê Đức Trọng") : (profile.full_name || "Le Duc Trong");
   const displayTitle = language === 'vi' ? (profile.title_vi || profile.title || defaultProfile.title_vi) : (profile.title || defaultProfile.title);
   const displayBio = language === 'vi' ? (profile.bio_vi || profile.bio) : profile.bio;
 
@@ -207,7 +207,7 @@ export function Hero({ initialProfile }: { initialProfile: any }) {
 
                 <div className="text-center mb-8">
                   <h2 className="text-2xl font-bold font-sans tracking-tight mb-1">{displayFullName}</h2>
-                  <p className="text-xs text-muted-foreground">{displayTitle}</p>
+                  <p className="text-xs font-sans text-muted-foreground">{displayTitle}</p>
                 </div>
 
                 <div className="space-y-4 text-xs mb-8 text-muted-foreground border-t border-border/50 pt-6">
@@ -267,9 +267,9 @@ export function Hero({ initialProfile }: { initialProfile: any }) {
             <div className="lg:col-span-6 flex flex-col justify-center gap-6 px-4 md:px-8">
               <div className="text-primary/70 text-sm font-bold opacity-80">&lt;h1&gt;</div>
               <div className="pl-6 md:pl-10 leading-tight">
-                <p className="text-4xl md:text-5xl font-sans text-foreground/90 mb-2">Hey</p>
+                <p className="text-4xl md:text-5xl font-sans text-foreground/90 mb-2">{language === 'vi' ? 'Xin chào,' : 'Hello,'}</p>
                 <h2 className="text-5xl md:text-6xl xl:text-7xl font-sans font-bold text-foreground mt-2 mb-2 leading-tight">
-                  I'm <span className="text-primary">{displayFullName.split(' ')[displayFullName.split(' ').length - 1]}</span>,
+                  {language === 'vi' ? 'tôi là' : "I'm"} <span className="text-primary">{displayFullName.split(' ').pop()}</span>,
                 </h2>
                 <h3 className="text-3xl xl:text-5xl md:text-5xl font-sans font-semibold text-foreground/80 leading-tight">
                   {displayTitle}

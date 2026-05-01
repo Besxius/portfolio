@@ -84,14 +84,14 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
         <div className="flex justify-center mb-8">
           <Briefcase className="w-24 h-24 text-primary opacity-80" />
         </div>
-        <h2 className="text-5xl md:text-7xl font-sans font-bold tracking-tight mb-6 text-primary">Experience</h2>
+        <h2 className="text-5xl md:text-7xl font-sans font-bold tracking-tight mb-6 text-primary">{t.sections.experienceTitle}</h2>
         <div className="flex items-center justify-center mb-6">
           <div className="h-[2px] w-12 bg-primary/20" />
           <div className="w-3 h-3 bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary-rgb),0.8)] mx-4" />
           <div className="h-[2px] w-12 bg-primary/20" />
         </div>
-        <p className="font-mono text-muted-foreground md:text-lg">
-          My professional journey and detailed experiences
+        <p className="font-sans text-muted-foreground md:text-lg">
+          {t.sections.experienceDesc}
         </p>
       </div>
 
@@ -234,7 +234,7 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
         </h3>
 
         {proj.role && (
-          <span className="text-sm font-mono font-bold text-primary mb-4 inline-block px-3 py-1 bg-primary/10 rounded-md max-w-max">
+          <span className="text-sm font-sans font-bold text-primary mb-4 inline-block px-3 py-1 bg-primary/10 rounded-md max-w-max">
             {language === 'vi' && proj.role_vi ? proj.role_vi : proj.role}
           </span>
         )}

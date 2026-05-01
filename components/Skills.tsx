@@ -120,11 +120,11 @@ export function Skills({ initialProfile }: { initialProfile: any }) {
            <Code2 className="w-24 h-24 text-primary opacity-80" />
         </div>
         <h2 className="text-5xl md:text-7xl font-sans font-bold tracking-tight mb-4 text-primary">
-          Skills
+          {t.sections.skillsTitle}
         </h2>
         <div className="w-32 h-1 bg-primary mx-auto rounded-full mb-8 shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]" />
-        <p className="font-mono text-muted-foreground md:text-lg">
-          I am striving to never stop learning and improving
+        <p className="font-sans text-muted-foreground md:text-lg">
+          {t.sections.skillsDesc}
         </p>
       </div>
 

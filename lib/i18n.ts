@@ -3,7 +3,7 @@ export type Language = 'en' | 'vi';
 export const translations = {
   en: {
     hero: {
-      greeting: "Hi, I'm",
+      greeting: "Hello, I'm",
       role: "Software Engineering Student",
       bio: "I'm a passionate software engineering student building modern web applications. Currently focusing on full-stack development and modern Web Technologies.",
       downloadCV: "Download CV",
@@ -12,14 +12,18 @@ export const translations = {
     nav: {
       home: "Home",
       about: "About",
+      experience: "Experience",
       projects: "Projects",
       skills: "Skills",
       contact: "Contact"
     },
     sections: {
       projectsTitle: "Featured Projects",
-      skillsTitle: "My Skills",
+      skillsTitle: "Skills",
       contactTitle: "Contact",
+      experienceTitle: "Experience",
+      experienceDesc: "My professional journey and detailed experiences",
+      skillsDesc: "I am striving to never stop learning and improving.",
     },
     projects: {
       viewDemo: "Live Demo",
@@ -42,7 +46,7 @@ export const translations = {
   },
   vi: {
     hero: {
-      greeting: "Chào bạn, mình là",
+      greeting: "Xin chào, tôi là",
       role: "Sinh Viên Kỹ Thuật Phần Mềm",
       bio: "Mình là sinh viên kỹ thuật phần mềm đam mê xây dựng các ứng dụng web hiện đại. Hiện tại đang tập trung vào phát triển full-stack và công nghệ web hiện đại.",
       downloadCV: "Tải CV",
@@ -51,14 +55,18 @@ export const translations = {
     nav: {
       home: "Trang chủ",
       about: "Giới thiệu",
+      experience: "Kinh nghiệm",
       projects: "Dự án",
       skills: "Kỹ năng",
       contact: "Liên hệ"
     },
     sections: {
       projectsTitle: "Dự Án Nổi Bật",
-      skillsTitle: "Kỹ Năng Của Mình",
+      skillsTitle: "Kỹ Năng",
       contactTitle: "Liên Hệ Với Mình",
+      experienceTitle: "Kinh Nghiệm",
+      experienceDesc: "Hành trình sự nghiệp và các kinh nghiệm chi tiết của tôi",
+      skillsDesc: "Tôi luôn cố gắng không ngừng học hỏi và phát triển.",
     },
     projects: {
       viewDemo: "Xem Demo",

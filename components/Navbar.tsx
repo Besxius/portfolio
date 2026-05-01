@@ -10,7 +10,7 @@ import { firaCode } from "@/app/layout";
 // Note: Ensure @/app/layout exports firaCode or use a hardcoded font-family if it errors.
 export function Navbar() {
   const { theme, setTheme } = useTheme();
-  const { language, setLanguage, colorTheme, setColorTheme } = useAppContext();
+  const { language, setLanguage, colorTheme, setColorTheme, t } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [nameInfo, setNameInfo] = useState({ en: 'Le Duc Trong', vi: 'Lê Đức Trọng', avatar: '', x: 50, y: 50, scale: 1 });
@@ -47,11 +47,11 @@ export function Navbar() {
           <span className="tracking-wide">Portfolio</span>
         </div>
 
-        <div className="hidden md:flex items-center gap-10 font-mono text-sm">
-          <a href="#" className="hover:text-primary transition-colors text-primary">Home</a>
-          <a href="#experience" className="hover:text-primary transition-colors">Experience</a>
-          <a href="#skills" className="hover:text-primary transition-colors">Skills</a>
-          <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
+        <div className="hidden md:flex items-center gap-10 font-sans font-medium text-sm">
+          <a href="#" className="hover:text-primary transition-colors text-primary">{t.nav.home}</a>
+          <a href="#experience" className="hover:text-primary transition-colors">{t.nav.experience}</a>
+          <a href="#skills" className="hover:text-primary transition-colors">{t.nav.skills}</a>
+          <a href="#contact" className="hover:text-primary transition-colors">{t.nav.contact}</a>
         </div>
 
         {/* Social / Controls (Right) */}
@@ -83,11 +83,11 @@ export function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="md:hidden p-4 bg-background border-b border-border flex flex-col gap-4 font-mono text-sm">
-          <a href="#" onClick={() => setIsOpen(false)}>Home</a>
-          <a href="#experience" onClick={() => setIsOpen(false)}>Experience</a>
-          <a href="#skills" onClick={() => setIsOpen(false)}>Skills</a>
-          <a href="#contact" onClick={() => setIsOpen(false)}>Contact</a>
+        <div className="md:hidden p-4 bg-background border-b border-border flex flex-col gap-4 font-sans text-sm">
+          <a href="#" onClick={() => setIsOpen(false)}>{t.nav.home}</a>
+          <a href="#experience" onClick={() => setIsOpen(false)}>{t.nav.experience}</a>
+          <a href="#skills" onClick={() => setIsOpen(false)}>{t.nav.skills}</a>
+          <a href="#contact" onClick={() => setIsOpen(false)}>{t.nav.contact}</a>
           <div className="flex items-center gap-4 pt-4 border-t border-border">
              <button onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')}>{language.toUpperCase()} / Language</button>
              <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>Toggle Theme</button>
