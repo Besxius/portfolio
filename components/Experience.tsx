@@ -334,20 +334,20 @@ function ExperienceForm({ language, formData, setFormData, handleSave, handleCan
   const handlePointerUp = (e: React.PointerEvent) => { if (isDragging) { setIsDragging(false); e.currentTarget.releasePointerCapture(e.pointerId); } };
 
   return (
-    <div className="space-y-6 font-mono">
+    <div className="space-y-6 font-sans">
       <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
-        <h3 className="font-bold text-xl text-primary">&lt; Edit_Experience /&gt;</h3>
+        <h3 className="font-bold text-xl text-primary font-mono">&lt; Edit_Experience /&gt;</h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
         <div className="space-y-5 bg-card/50 p-5 rounded-2xl border border-border">
-          <div className="flex items-center gap-2 mb-2"><span className="text-2xl">🇺🇸</span> <span className="font-bold font-mono text-sm">English</span></div>
-          <input value={formData.title || ""} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background font-bold" placeholder="Title (EN)" />
+          <div className="flex items-center gap-2 mb-2"><span className="text-2xl">🇺🇸</span> <span className="font-bold font-sans text-sm">English</span></div>
+          <input value={formData.title || ""} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background font-bold font-sans" placeholder="Title (EN)" />
           <input value={formData.role || ""} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm" placeholder="Role (EN)" />
           <textarea value={formData.description || ""} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Description (EN)" />
         </div>
         <div className="space-y-5 bg-card/50 p-5 rounded-2xl border border-border">
-          <div className="flex items-center gap-2 mb-2"><span className="text-2xl">🇻🇳</span> <span className="font-bold font-mono text-sm">Tiếng Việt</span></div>
-          <input value={formData.title_vi || ""} onChange={e => setFormData({ ...formData, title_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background font-bold" placeholder="Tiêu Đề (VI)" />
+          <div className="flex items-center gap-2 mb-2"><span className="text-2xl">🇻🇳</span> <span className="font-bold font-sans text-sm">Tiếng Việt</span></div>
+          <input value={formData.title_vi || ""} onChange={e => setFormData({ ...formData, title_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background font-bold font-sans" placeholder="Tiêu Đề (VI)" />
           <input value={formData.role_vi || ""} onChange={e => setFormData({ ...formData, role_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm" placeholder="Vai Trò (VI)" />
           <textarea value={formData.description_vi || ""} onChange={e => setFormData({ ...formData, description_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Mô Tả (VI)" />
         </div>
