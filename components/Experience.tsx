@@ -63,7 +63,11 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
   };
 
   const visibleProjects = isAdmin ? projects : projects.filter(p => !p.is_hidden);
-  const sortedProjects = [...visibleProjects].sort((a, b) => new Date(a.start_date || 0).getTime() - new Date(b.start_date || 0).getTime());
+  const sortedProjects = [...visibleProjects].sort((a, b) => {
+    const timeA = a.start_date ? new Date(a.start_date).getTime() : new Date().getTime();
+    const timeB = b.start_date ? new Date(b.start_date).getTime() : new Date().getTime();
+    return timeB - timeA;
+  });
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return language === 'vi' ? 'Hiện tại' : 'Present';
