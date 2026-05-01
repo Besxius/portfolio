@@ -11,6 +11,7 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
   const [loading, setLoading] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
 
   const handleEdit = (proj: any) => {
     setFormData({ ...proj, tags: (proj.tags || []).join(", ") });
@@ -21,6 +22,7 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
     setFormData({
       title: "", title_vi: "",
       description: "", description_vi: "",
+      features: "", features_vi: "",
       role: "", role_vi: "",
       image_url: "", image_x: 50, image_y: 50, image_scale: 1,
       tags: "", demo_url: "", github_url: "", is_hidden: false, show_dates: true, start_date: "", end_date: ""
@@ -31,7 +33,10 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
   const handleSave = async () => {
     setLoading(true);
     const tagsArray = formData.tags ? (typeof formData.tags === 'string' ? formData.tags.split(",") : formData.tags).map((t: string) => t.trim()).filter(Boolean) : [];
-    const payload = { ...formData, tags: tagsArray };
+    const featuresArray = formData.features ? (typeof formData.features === 'string' ? formData.features.split("\n") : formData.features).map((t: string) => t.trim()).filter(Boolean) : [];
+    const featuresViArray = formData.features_vi ? (typeof formData.features_vi === 'string' ? formData.features_vi.split("\n") : formData.features_vi).map((t: string) => t.trim()).filter(Boolean) : [];
+
+    const payload = { ...formData, tags: tagsArray, features: featuresArray, features_vi: featuresViArray };
     if (!payload.start_date) payload.start_date = null;
     if (!payload.end_date) payload.end_date = null;
 
@@ -137,6 +142,7 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
                   handleEdit={handleEdit}
                   handleDelete={handleDelete}
                   formatDate={formatDate}
+                  setSelectedProject={setSelectedProject}
                 />
               </div>
             ))}
@@ -150,11 +156,15 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
         </div>
       )}
 
+      {selectedProject && (
+        <ExperienceModal proj={selectedProject} language={language} onClose={() => setSelectedProject(null)} />
+      )}
+
     </section>
   );
 }
 
-function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit, handleDelete, formatDate }: any) {
+function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit, handleDelete, formatDate, setSelectedProject }: any) {
   const [expanded, setExpanded] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
 
@@ -170,6 +180,8 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
   const currentImg = images[imgIndex] || null;
 
   const desc = language === 'vi' && proj.description_vi ? proj.description_vi : proj.description;
+  const features = language === 'vi' && proj.features_vi ? proj.features_vi : proj.features;
+
   const isLong = desc && desc.length > 200;
   const displayDesc = expanded ? desc : (isLong ? desc.slice(0, 200) + '...' : desc);
 
@@ -200,19 +212,18 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
         </div>
       )}
 
-      {/* Image Column - Square and Fixed Size */}
-      <div className="shrink-0 mt-4 xl:mt-0 flex flex-col items-center gap-3 z-10">
-        <div className="w-[260px] h-[260px] relative group/image overflow-hidden rounded-xl bg-background border border-border shadow-inner flex items-center justify-center">
+      {/* Image Column */}
+      <div className="shrink-0 mt-4 xl:mt-0 flex flex-col items-center gap-3 z-10 w-full xl:w-[500px]">
+        <div className="w-full aspect-video relative group/image overflow-hidden rounded-xl md:rounded-2xl bg-muted/20 border border-border/50 shadow-inner flex items-center justify-center">
           {currentImg ? (
             <>
-              <img src={currentImg.url} alt="Cover" className="w-full h-full object-cover transition-transform duration-500"
-                style={{ objectPosition: `${currentImg.x || 50}% ${currentImg.y || 50}%`, transform: `scale(${currentImg.scale || 1})` }} />
+              <img src={currentImg.url} alt="Cover" className="w-full h-full object-contain drop-shadow-md transition-transform duration-500" />
               <div className="absolute inset-0 z-10 block -translate-x-[150%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover/image:translate-x-[150%] transition-transform duration-[1500ms] pointer-events-none" />
 
               {images.length > 1 && (
                 <>
-                  <button onClick={prevImg} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1 rounded-full opacity-0 group-hover/image:opacity-100 transition-opacity z-20 hover:bg-black/80"><ChevronLeft className="w-5 h-5" /></button>
-                  <button onClick={nextImg} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1 rounded-full opacity-0 group-hover/image:opacity-100 transition-opacity z-20 hover:bg-black/80"><ChevronRight className="w-5 h-5" /></button>
+                  <button onClick={prevImg} className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/80 text-foreground p-1.5 rounded-full opacity-0 group-hover/image:opacity-100 transition-all z-20 shadow-md"><ChevronLeft className="w-5 h-5" /></button>
+                  <button onClick={nextImg} className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/80 text-foreground p-1.5 rounded-full opacity-0 group-hover/image:opacity-100 transition-all z-20 shadow-md"><ChevronRight className="w-5 h-5" /></button>
                 </>
               )}
             </>
@@ -223,7 +234,7 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
 
         {/* Dots Indicator outside image */}
         {images.length > 1 && (
-          <div className="flex justify-center gap-2 w-full">
+          <div className="flex justify-center gap-2 w-full mt-2">
             {images.map((_: any, i: number) => (
               <button key={i} onClick={() => setImgIndex(i)} className={`w-1.5 h-1.5 rounded-full ${i === imgIndex ? 'bg-primary scale-125' : 'bg-primary/30'} hover:bg-primary/80 transition-all`} />
             ))}
@@ -245,12 +256,34 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
 
         <p className="text-base font-sans text-muted-foreground leading-relaxed mb-6 whitespace-pre-wrap">
           {displayDesc}
-          {isLong && (
-            <button onClick={() => setExpanded(!expanded)} className="ml-2 text-primary font-bold hover:underline transition-colors focus:outline-none inline">
-              {expanded ? (language === 'vi' ? 'Ẩn bớt' : 'See less') : (language === 'vi' ? 'Xem thêm' : 'See more')}
+          {isLong && !expanded && (
+            <button onClick={() => setExpanded(true)} className="ml-2 text-primary font-bold hover:underline transition-colors focus:outline-none inline">
+              {language === 'vi' ? 'Xem thêm' : 'See more'}
             </button>
           )}
         </p>
+
+        {features && Array.isArray(features) && features.length > 0 && (
+          <div className="mb-6">
+            <h4 className="text-sm font-bold font-sans text-primary mb-3">{language === 'vi' ? '✨ Tính Năng Nổi Bật:' : '✨ Key Features:'}</h4>
+            <ul className="list-disc pl-5 space-y-1.5 text-sm font-sans text-muted-foreground">
+              {(expanded ? features : features.slice(0, 3)).map((feature: string, idx: number) => (
+                <li key={idx} className="pl-1 leading-relaxed">{feature}</li>
+              ))}
+            </ul>
+            {!expanded && features.length > 3 && (
+              <button onClick={() => setExpanded(true)} className="mt-2 text-xs text-primary font-bold hover:underline inline-flex items-center">
+                {language === 'vi' ? `+${features.length - 3} tính năng nữa...` : `+${features.length - 3} more features...`}
+              </button>
+            )}
+          </div>
+        )}
+
+        {expanded && (
+          <button onClick={() => setExpanded(false)} className="text-sm text-primary font-bold hover:underline transition-colors mb-6 inline-block">
+            {language === 'vi' ? 'Ẩn bớt' : 'Show less'}
+          </button>
+        )}
 
         {proj.tags && proj.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
@@ -263,6 +296,7 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
         )}
 
         <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-border/40 mt-auto">
+          <button onClick={() => setSelectedProject(proj)} className="text-sm font-bold font-sans bg-primary/10 text-primary px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-primary/20 transition-colors border border-primary/20 shadow-sm"><Eye className="w-4 h-4" /> {language === 'vi' ? 'Xem chi tiết' : 'View Details'}</button>
           {proj.demo_url && <a href={proj.demo_url} target="_blank" rel="noreferrer" className="text-sm font-bold font-sans bg-primary text-primary-foreground px-5 py-2.5 rounded-lg flex items-center gap-2 hover:opacity-90 transition-opacity"><ExternalLink className="w-4 h-4" /> View Live</a>}
           {proj.github_url && <a href={proj.github_url} target="_blank" rel="noreferrer" className="text-sm font-bold font-sans bg-muted/80 text-foreground px-5 py-2.5 rounded-lg flex items-center gap-2 hover:bg-muted transition-colors border border-border/50"><Code className="w-4 h-4" /> Source Code</a>}
         </div>
@@ -348,12 +382,14 @@ function ExperienceForm({ language, formData, setFormData, handleSave, handleCan
           <input value={formData.title || ""} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background font-bold font-sans" placeholder="Title (EN)" />
           <input value={formData.role || ""} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm" placeholder="Role (EN)" />
           <textarea value={formData.description || ""} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Description (EN)" />
+          <textarea value={Array.isArray(formData.features) ? formData.features.join('\n') : (formData.features || "")} onChange={e => setFormData({ ...formData, features: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Key Features (One per line) (EN)" />
         </div>
         <div className="space-y-5 bg-card/50 p-5 rounded-2xl border border-border">
           <div className="flex items-center gap-2 mb-2"><span className="text-2xl">🇻🇳</span> <span className="font-bold font-sans text-sm">Tiếng Việt</span></div>
           <input value={formData.title_vi || ""} onChange={e => setFormData({ ...formData, title_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background font-bold font-sans" placeholder="Tiêu Đề (VI)" />
           <input value={formData.role_vi || ""} onChange={e => setFormData({ ...formData, role_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm" placeholder="Vai Trò (VI)" />
           <textarea value={formData.description_vi || ""} onChange={e => setFormData({ ...formData, description_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Mô Tả (VI)" />
+          <textarea value={Array.isArray(formData.features_vi) ? formData.features_vi.join('\n') : (formData.features_vi || "")} onChange={e => setFormData({ ...formData, features_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Tính Năng Nổi Bật (Mỗi dòng 1 tính năng) (VI)" />
         </div>
       </div>
 
@@ -417,4 +453,117 @@ function ExperienceForm({ language, formData, setFormData, handleSave, handleCan
       </div>
     </div>
   )
+}
+
+function ExperienceModal({ proj, onClose, language }: any) {
+  const [topIndex, setTopIndex] = useState(0);
+
+  const images = useMemo(() => {
+    if (!proj.image_url) return [];
+    try {
+      const parsed = JSON.parse(proj.image_url);
+      if (Array.isArray(parsed)) return parsed;
+    } catch (e) { }
+    return [{ url: proj.image_url, x: proj.image_x || 50, y: proj.image_y || 50, scale: proj.image_scale || 1 }];
+  }, [proj.image_url]);
+
+  const desc = language === 'vi' && proj.description_vi ? proj.description_vi : proj.description;
+  const features = language === 'vi' && proj.features_vi ? proj.features_vi : proj.features;
+
+  const nextImg = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setTopIndex((prev) => (prev + 1) % images.length);
+  };
+  const prevImg = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setTopIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] bg-background/90 backdrop-blur-md flex items-center justify-center p-4 md:p-8" onClick={onClose}>
+      <div className="bg-card w-full max-w-7xl max-h-full md:max-h-[90vh] h-full md:h-auto rounded-3xl border border-border shadow-2xl flex flex-col lg:flex-row relative overflow-hidden" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-4 right-4 z-[60] p-2 bg-background/80 backdrop-blur-md rounded-full hover:bg-muted text-foreground border border-border shadow-sm"><X className="w-6 h-6" /></button>
+
+        {/* Images Fan Section - takes up 60% of width on Desktop */}
+        <div className="relative w-full lg:w-[60%] h-[50vh] lg:h-auto lg:min-h-[75vh] flex items-center justify-center bg-gradient-to-br from-muted/40 to-muted/10 overflow-hidden p-4 md:p-8">
+          {images.length > 1 && (
+            <>
+              <button onClick={prevImg} className="absolute left-4 z-[60] bg-background/50 hover:bg-background/80 text-foreground p-3 rounded-full backdrop-blur-md border border-border shadow-md transition-all hover:scale-110"><ChevronLeft className="w-6 h-6" /></button>
+              <button onClick={nextImg} className="absolute right-4 z-[60] bg-background/50 hover:bg-background/80 text-foreground p-3 rounded-full backdrop-blur-md border border-border shadow-md transition-all hover:scale-110"><ChevronRight className="w-6 h-6" /></button>
+            </>
+          )}
+          {images.length > 0 ? (
+            images.map((img: any, i: number) => {
+              const isTop = i === topIndex;
+              const offset = i - topIndex;
+              const rotation = isTop ? 0 : offset * 5;
+              const translateX = isTop ? 0 : offset * 30;
+              const translateY = isTop ? 0 : Math.abs(offset) * 10;
+              const zIndex = isTop ? 50 : 40 - Math.abs(offset);
+
+              return (
+                <div
+                  key={i}
+                  onClick={() => setTopIndex(i)}
+                  className={`absolute flex items-center justify-center cursor-pointer transition-all duration-700 ease-out ${!isTop && 'hover:-translate-y-4 hover:scale-105'}`}
+                  style={{
+                    transform: `translate(${translateX}px, ${translateY}px) rotate(${rotation}deg) scale(${isTop ? 1 : 0.85})`,
+                    zIndex,
+                    width: 'max-content',
+                    height: 'max-content',
+                    maxWidth: '100%',
+                    maxHeight: '100%'
+                  }}
+                >
+                  <img src={img.url} className="w-auto h-auto max-w-[90%] max-h-[45vh] lg:max-w-full lg:max-h-[70vh] object-contain rounded-xl md:rounded-2xl border-4 md:border-[6px] border-background/80 bg-muted/80 backdrop-blur-md shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] drop-shadow-2xl" />
+                </div>
+              );
+            })
+          ) : (
+            <div className="text-muted-foreground font-mono">No images</div>
+          )}
+        </div>
+
+        {/* Content Section - takes up 40% of width on Desktop, scrolling independently */}
+        <div className="w-full lg:w-[40%] p-6 md:p-10 relative z-10 bg-background overflow-y-auto flex flex-col h-[60vh] lg:h-auto max-h-[90vh]">
+          <h2 className="text-3xl md:text-4xl font-bold font-sans mb-3 text-foreground">{language === 'vi' && proj.title_vi ? proj.title_vi : proj.title}</h2>
+          {proj.role && (
+            <span className="text-sm font-sans font-bold text-primary mb-6 inline-block px-3 py-1 bg-primary/10 rounded-md max-w-max">
+              {language === 'vi' && proj.role_vi ? proj.role_vi : proj.role}
+            </span>
+          )}
+
+          <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none font-sans whitespace-pre-wrap leading-relaxed text-muted-foreground mb-8 flex-1">
+            {desc}
+          </div>
+
+          {features && Array.isArray(features) && features.length > 0 && (
+            <div className="mb-8 p-5 bg-muted/20 border border-border/50 rounded-2xl shadow-inner">
+              <h3 className="text-lg font-bold font-sans text-primary mb-3">{language === 'vi' ? '✨ Tính Năng Nổi Bật' : '✨ Key Features'}</h3>
+              <ul className="list-disc pl-5 space-y-1 prose prose-sm md:prose-base dark:prose-invert max-w-none font-sans leading-relaxed text-foreground/80 marker:text-primary/70">
+                {features.map((feature: string, idx: number) => (
+                  <li key={idx} className="pl-1">{feature}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {proj.tags && proj.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-8">
+              {proj.tags.map((tag: string, i: number) => (
+                <span key={i} className="text-xs font-mono font-bold px-3 py-1 rounded border border-border/60 bg-muted/30 text-foreground shadow-sm">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center gap-3 pt-6 border-t border-border mt-auto">
+            {proj.demo_url && <a href={proj.demo_url} target="_blank" rel="noreferrer" className="text-sm font-bold font-sans bg-primary text-primary-foreground px-5 py-2.5 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity shadow-md hover:shadow-lg hover:-translate-y-0.5"><ExternalLink className="w-4 h-4" /> View Live</a>}
+            {proj.github_url && <a href={proj.github_url} target="_blank" rel="noreferrer" className="text-sm font-bold font-sans bg-muted/80 text-foreground px-5 py-2.5 rounded-xl flex items-center gap-2 hover:bg-muted transition-colors border border-border/50 shadow-sm hover:shadow hover:-translate-y-0.5"><Code className="w-4 h-4" /> Source Code</a>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
