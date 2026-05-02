@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Inter, Fira_Code } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/components/providers";
 import { Navbar } from "@/components/Navbar";
 
 import { supabase } from "@/lib/supabase";
 
-const inter = Inter({ subsets: ["latin", "vietnamese"], variable: '--font-sans' });
-export const firaCode = Fira_Code({ subsets: ["latin"], variable: '--font-mono' });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin", "vietnamese"], variable: '--font-mono' });
+export const firaCode = jetbrainsMono; // Alias so we don't break existing imports if any
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${firaCode.variable} font-sans min-h-screen bg-background text-foreground flex flex-col`}>
+      <body className={`${jetbrainsMono.variable} font-mono min-h-screen bg-background text-foreground flex flex-col overflow-x-hidden`}>
         <AppProviders attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
           <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

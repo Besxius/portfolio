@@ -4,6 +4,7 @@ import { useState, useRef, useMemo, useEffect } from "react";
 import { useAppContext } from "./providers";
 import { supabase } from "@/lib/supabase";
 import { Loader2, Edit2, Plus, Trash2, Check, X, Eye, EyeOff, Code, ExternalLink, Calendar, Briefcase, ChevronLeft, ChevronRight, XCircle, Code2 } from "lucide-react";
+import { ConfirmModal } from "./ConfirmModal";
 
 export function Experience({ initialProjects }: { initialProjects: any[] }) {
   const { t, isAdmin, language } = useAppContext();
@@ -12,6 +13,7 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
   const [formData, setFormData] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [confirmId, setConfirmId] = useState<string | null>(null);
 
   const handleEdit = (proj: any) => {
     setFormData({ ...proj, tags: (proj.tags || []).join(", ") });
@@ -61,10 +63,15 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
     if (data) { setProjects(projects.map(p => p.id === proj.id ? data[0] : p)); }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure?")) return;
-    await supabase.from("projects").delete().eq("id", id);
-    setProjects(projects.filter(p => p.id !== id));
+  const handleDelete = (id: string) => {
+    setConfirmId(id);
+  };
+
+  const doDelete = async () => {
+    if (!confirmId) return;
+    await supabase.from("projects").delete().eq("id", confirmId);
+    setProjects(projects.filter(p => p.id !== confirmId));
+    setConfirmId(null);
   };
 
   const visibleProjects = isAdmin ? projects : projects.filter(p => !p.is_hidden);
@@ -81,6 +88,14 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
 
   return (
     <section id="experience" className="py-24 max-w-[1400px] mx-auto relative flex flex-col justify-center min-h-[90vh] overflow-hidden">
+      <ConfirmModal 
+        isOpen={!!confirmId}
+        title="Delete Experience"
+        message="Are you sure you want to remove this experience entry? This action cannot be undone."
+        confirmText="Delete"
+        onConfirm={doDelete}
+        onCancel={() => setConfirmId(null)}
+      />
 
       <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-50">
         <div className="w-6 h-10 border-2 border-primary/50 rounded-full flex justify-center p-1">
@@ -106,8 +121,8 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
 
       <div className="absolute top-32 right-10 z-30">
         {isAdmin && (
-          <button onClick={handleAddNew} className="flex items-center gap-2 px-5 py-2 hover:bg-primary/20 bg-primary/10 text-primary border border-primary/50 rounded-xl font-mono text-sm shadow-sm backdrop-blur-md">
-            <Plus className="w-4 h-4" /> ADD_NEW
+          <button onClick={handleAddNew} className="flex items-center gap-2 px-6 py-2.5 hover:bg-primary/20 bg-primary/10 text-primary border border-primary/50 rounded-xl font-sans font-bold text-sm shadow-md backdrop-blur-md transition-all hover:scale-105">
+            <Plus className="w-4 h-4" /> {t.admin.addExperience || "Add Experience"}
           </button>
         )}
       </div>
@@ -198,10 +213,10 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
 
       {/* Admin Controls */}
       {isAdmin && (
-        <div className="absolute -top-4 -right-4 flex gap-2 z-40">
-          <button onClick={() => handleToggleHide(proj)} className="p-2 bg-background border border-border rounded-full hover:text-primary shadow-sm"><Eye className="w-4 h-4" /></button>
-          <button onClick={() => handleEdit(proj)} className="p-2 bg-background border border-border text-primary rounded-full shadow-sm"><Edit2 className="w-4 h-4" /></button>
-          <button onClick={() => handleDelete(proj.id)} className="p-2 bg-background border border-border text-red-500 rounded-full shadow-sm"><Trash2 className="w-4 h-4" /></button>
+        <div className="absolute top-4 right-4 flex gap-1 z-40 md:opacity-0 md:group-hover/card:opacity-100 transition-opacity">
+          <button onClick={() => handleToggleHide(proj)} className="p-1.5 bg-background border border-border rounded-full hover:text-primary shadow-sm"><Eye className="w-4 h-4" /></button>
+          <button onClick={() => handleEdit(proj)} className="p-1.5 bg-background border border-border text-primary rounded-full shadow-sm"><Edit2 className="w-4 h-4" /></button>
+          <button onClick={() => handleDelete(proj.id)} className="p-1.5 bg-background border border-border text-red-500 rounded-full shadow-sm"><Trash2 className="w-4 h-4" /></button>
         </div>
       )}
 
@@ -377,31 +392,31 @@ function ExperienceForm({ language, formData, setFormData, handleSave, handleCan
         <h3 className="font-bold text-xl text-primary font-mono">&lt; Edit_Experience /&gt;</h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
-        <div className="space-y-5 bg-card/50 p-5 rounded-2xl border border-border">
+        <div className="space-y-5 bg-card/50 p-6 rounded-3xl border border-border">
           <div className="flex items-center gap-2 mb-2"><span className="text-2xl">🇺🇸</span> <span className="font-bold font-sans text-sm">English</span></div>
-          <input value={formData.title || ""} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background font-bold font-sans" placeholder="Title (EN)" />
-          <input value={formData.role || ""} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm" placeholder="Role (EN)" />
-          <textarea value={formData.description || ""} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Description (EN)" />
-          <textarea value={Array.isArray(formData.features) ? formData.features.join('\n') : (formData.features || "")} onChange={e => setFormData({ ...formData, features: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Key Features (One per line) (EN)" />
+          <input value={formData.title || ""} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all font-sans text-sm outline-none font-bold shadow-sm" placeholder="Title (EN)" />
+          <input value={formData.role || ""} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all font-sans text-sm outline-none shadow-sm" placeholder="Role (EN)" />
+          <textarea value={formData.description || ""} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all font-sans text-sm outline-none h-24 shadow-sm" placeholder="Description (EN)" />
+          <textarea value={Array.isArray(formData.features) ? formData.features.join('\n') : (formData.features || "")} onChange={e => setFormData({ ...formData, features: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all font-sans text-sm outline-none h-24 shadow-sm" placeholder="Key Features (One per line) (EN)" />
         </div>
-        <div className="space-y-5 bg-card/50 p-5 rounded-2xl border border-border">
+        <div className="space-y-5 bg-card/50 p-6 rounded-3xl border border-border">
           <div className="flex items-center gap-2 mb-2"><span className="text-2xl">🇻🇳</span> <span className="font-bold font-sans text-sm">Tiếng Việt</span></div>
-          <input value={formData.title_vi || ""} onChange={e => setFormData({ ...formData, title_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background font-bold font-sans" placeholder="Tiêu Đề (VI)" />
-          <input value={formData.role_vi || ""} onChange={e => setFormData({ ...formData, role_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm" placeholder="Vai Trò (VI)" />
-          <textarea value={formData.description_vi || ""} onChange={e => setFormData({ ...formData, description_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Mô Tả (VI)" />
-          <textarea value={Array.isArray(formData.features_vi) ? formData.features_vi.join('\n') : (formData.features_vi || "")} onChange={e => setFormData({ ...formData, features_vi: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-input bg-background h-24 text-sm" placeholder="Tính Năng Nổi Bật (Mỗi dòng 1 tính năng) (VI)" />
+          <input value={formData.title_vi || ""} onChange={e => setFormData({ ...formData, title_vi: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all font-sans text-sm outline-none font-bold shadow-sm" placeholder="Tiêu Đề (VI)" />
+          <input value={formData.role_vi || ""} onChange={e => setFormData({ ...formData, role_vi: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all font-sans text-sm outline-none shadow-sm" placeholder="Vai Trò (VI)" />
+          <textarea value={formData.description_vi || ""} onChange={e => setFormData({ ...formData, description_vi: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all font-sans text-sm outline-none h-24 shadow-sm" placeholder="Mô Tả (VI)" />
+          <textarea value={Array.isArray(formData.features_vi) ? formData.features_vi.join('\n') : (formData.features_vi || "")} onChange={e => setFormData({ ...formData, features_vi: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all font-sans text-sm outline-none h-24 shadow-sm" placeholder="Tính Năng Nổi Bật (Mỗi dòng 1 tính năng) (VI)" />
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 bg-muted/20 p-5 rounded-2xl border border-border text-sm font-sans">
-        <label className="col-span-2 flex items-center gap-3 font-bold cursor-pointer">
-          <input type="checkbox" checked={formData.show_dates} onChange={e => setFormData({ ...formData, show_dates: e.target.checked })} className="w-4 h-4 text-primary rounded" />
+      <div className="grid grid-cols-2 gap-6 bg-card/30 p-6 rounded-3xl border border-border text-sm font-sans">
+        <label className="col-span-2 flex items-center gap-3 font-bold cursor-pointer hover:text-primary transition-colors">
+          <input type="checkbox" checked={formData.show_dates} onChange={e => setFormData({ ...formData, show_dates: e.target.checked })} className="w-4 h-4 text-primary rounded accent-primary cursor-pointer" />
           Show Dates on Timeline
         </label>
         {formData.show_dates && (
           <>
-            <div><label className="text-xs text-muted-foreground uppercase font-bold mb-1 block">Start Date</label><input type="date" value={formData.start_date || ""} onChange={e => setFormData({ ...formData, start_date: e.target.value })} className="w-full px-3 py-2 rounded-xl border bg-background" /></div>
-            <div><label className="text-xs text-muted-foreground uppercase font-bold mb-1 block">End Date (Optional)</label><input type="date" value={formData.end_date || ""} onChange={e => setFormData({ ...formData, end_date: e.target.value })} className="w-full px-3 py-2 rounded-xl border bg-background" /></div>
+            <div><label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-2 block">Start Date</label><input type="date" value={formData.start_date || ""} onChange={e => setFormData({ ...formData, start_date: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all shadow-sm outline-none" /></div>
+            <div><label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-2 block">End Date (Optional)</label><input type="date" value={formData.end_date || ""} onChange={e => setFormData({ ...formData, end_date: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-background focus:bg-background focus:ring-2 focus:ring-primary/30 transition-all shadow-sm outline-none" /></div>
           </>
         )}
       </div>
