@@ -23,11 +23,13 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --font-sans: var(--font-mono);
+  --font-sans: var(--base-font);
+  --font-mono: var(--base-font);
 }
 
 @layer base {
   :root {
+    --base-font: var(--font-jetbrains);
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -40,6 +42,20 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
+  }
+
+  :root[data-font-theme='jetbrains'] { 
+    --base-font: var(--font-jetbrains); 
+  }
+  :root[data-font-theme='sans'] { 
+    --base-font: var(--font-inter); 
+  }
+
+  :root[data-font-theme='jetbrains'] * {
+    font-family: var(--font-jetbrains), monospace !important;
+  }
+  :root[data-font-theme='sans'] * {
+    font-family: var(--font-inter), sans-serif !important;
   }
 
   /* Default theme is blue (slate blue) */

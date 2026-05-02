@@ -11,6 +11,8 @@ type AppContextType = {
   setLanguage: (lang: Language) => void;
   colorTheme: 'blue' | 'green';
   setColorTheme: (color: 'blue' | 'green') => void;
+  fontTheme: string;
+  setFontTheme: (font: string) => void;
   t: typeof translations['en'];
   isAdmin: boolean;
   setIsAdmin: (v: boolean) => void;
@@ -21,6 +23,7 @@ const AppContext = React.createContext<AppContextType | undefined>(undefined);
 export function AppProviders({ children, ...props }: ThemeProviderProps) {
   const [language, setLanguage] = React.useState<Language>('en');
   const [colorTheme, setColorTheme] = React.useState<'blue' | 'green'>('blue');
+  const [fontTheme, setFontTheme] = React.useState<string>('sans');
   const [isAdmin, setIsAdmin] = React.useState(false);
 
   React.useEffect(() => {
@@ -31,6 +34,10 @@ export function AppProviders({ children, ...props }: ThemeProviderProps) {
     const savedColor = localStorage.getItem('portfolio-color') as 'blue' | 'green';
     if (savedColor && (savedColor === 'blue' || savedColor === 'green')) {
       setColorTheme(savedColor);
+    }
+    const savedFont = localStorage.getItem('portfolio-font');
+    if (savedFont) {
+      setFontTheme(savedFont);
     }
     
     // Check initial auth state
@@ -57,6 +64,13 @@ export function AppProviders({ children, ...props }: ThemeProviderProps) {
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
+      document.documentElement.setAttribute('data-font-theme', fontTheme);
+      localStorage.setItem('portfolio-font', fontTheme);
+    }
+  }, [fontTheme]);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
       localStorage.setItem('portfolio-language', language);
     }
   }, [language]);
@@ -66,10 +80,12 @@ export function AppProviders({ children, ...props }: ThemeProviderProps) {
     setLanguage,
     colorTheme,
     setColorTheme,
+    fontTheme,
+    setFontTheme,
     t: translations[language] || translations['en'],
     isAdmin,
     setIsAdmin
-  }), [language, colorTheme, isAdmin]);
+  }), [language, colorTheme, fontTheme, isAdmin]);
 
   return (
     <NextThemesProvider {...props}>
