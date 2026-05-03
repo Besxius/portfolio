@@ -202,9 +202,9 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
             <h1 className="text-[12rem] md:text-[18rem] font-bold tracking-tighter mix-blend-overlay">Developer</h1>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 font-mono">
+          <div className="grid grid-cols-1 lg:grid-cols-24 gap-12 items-center relative z-10 font-mono">
 
-            <div className="lg:col-span-4 flex justify-center lg:justify-start">
+            <div className="lg:col-span-8 flex justify-center lg:justify-start">
               <div className="bg-card/20 backdrop-blur-md w-full max-w-sm rounded-tl-[60px] rounded-br-[60px] rounded-tr-3xl rounded-bl-3xl border border-primary/20 overflow-hidden p-8 shadow-2xl relative">
                 <div className="flex justify-center mb-6 relative">
                   <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-primary to-primary/20">
@@ -278,7 +278,7 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
               </div>
             </div>
 
-            <div className="lg:col-span-6 flex flex-col justify-center gap-6 px-4 md:px-8">
+            <div className="lg:col-span-11 flex flex-col justify-center gap-6 px-4 md:px-8">
               <div className="text-primary/70 text-sm font-bold opacity-80">&lt;h1&gt;</div>
               <div className="pl-6 md:pl-10 leading-tight">
                 <p className="text-4xl md:text-5xl font-sans text-foreground/90 mb-2">{language === 'vi' ? 'Xin chào,' : 'Hello,'}</p>
@@ -298,23 +298,23 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
               <div className="text-primary/70 text-sm font-bold opacity-80">&lt;/p&gt;</div>
             </div>
 
-            <div className="lg:col-span-2 hidden lg:flex flex-col justify-center">
-              <div className="bg-card/30 backdrop-blur-xl w-full rounded-[40px] px-6 py-10 border border-border/30 shadow-xl space-y-8">
+            <div className="lg:col-span-5 hidden lg:flex flex-col justify-center">
+              <div className="bg-card/30 backdrop-blur-xl w-full rounded-[40px] px-5 py-10 border border-border/30 shadow-xl space-y-8">
                 <div className="flex items-center gap-4">
                   <span className="text-4xl font-sans font-bold text-primary">{initialStats?.languages || 0}</span>
-                  <span className="text-[10px] xl:text-xs text-muted-foreground uppercase tracking-widest leading-tight w-20">Programming Languages</span>
+                  <span className="text-[10px] xl:text-xs text-muted-foreground uppercase tracking-widest leading-tight flex-1">Programming Languages</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="text-4xl font-sans font-bold text-primary">{initialStats?.frameworks || 0}</span>
-                  <span className="text-[10px] xl:text-xs text-muted-foreground uppercase tracking-widest leading-tight w-20">Frameworks</span>
+                  <span className="text-[10px] xl:text-xs text-muted-foreground uppercase tracking-widest leading-tight flex-1">Frameworks</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="text-4xl font-sans font-bold text-primary">{initialStats?.devTools || 0}</span>
-                  <span className="text-[10px] xl:text-xs text-muted-foreground uppercase tracking-widest leading-tight w-20">Dev Tools</span>
+                  <span className="text-[10px] xl:text-xs text-muted-foreground uppercase tracking-widest leading-tight flex-1">Dev Tools</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="text-4xl font-sans font-bold text-primary">{profile.stats_experience || 0}</span>
-                  <span className="text-[10px] xl:text-xs text-muted-foreground uppercase tracking-widest leading-tight w-20">Years of Experience</span>
+                  <span className="text-[10px] xl:text-xs text-muted-foreground uppercase tracking-widest leading-tight flex-1">Years of Experience</span>
                 </div>
               </div>
             </div>
