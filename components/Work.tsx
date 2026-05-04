@@ -18,7 +18,7 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
   const sortedWorks = [...visibleWorks].sort((a, b) => {
     const timeA = a.start_date ? new Date(a.start_date).getTime() : new Date().getTime();
     const timeB = b.start_date ? new Date(b.start_date).getTime() : new Date().getTime();
-    return timeA - timeB;
+    return timeB - timeA;
   });
 
   const handleEdit = (w: any) => {
@@ -145,80 +145,6 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
       )}
 
       {visibleWorks.length > 0 && !editingId && (
-        <div className="relative w-full overflow-x-auto pb-12 pt-8 px-8 snap-x snap-mandatory flex gap-8 items-start scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-          {/* Horizontal Connecting Line */}
-          <div className="absolute top-[5rem] left-8 right-8 h-[2px] bg-primary/30 -z-10 rounded-full" />
-
-          {sortedWorks.map((work, idx) => {
-            const year = getYear(work.start_date);
-            const isHidden = work.is_hidden;
-
-            return (
-              <div key={work.id} className={`snap-center shrink-0 w-[300px] md:w-[350px] relative flex flex-col items-center group transition-all ${isHidden ? 'opacity-50 grayscale' : ''}`}>
-
-                {/* Year Badge */}
-                <div className="bg-background text-primary font-mono text-sm font-bold px-4 py-1.5 rounded-full border border-primary/40 shadow-md mb-5 z-10 whitespace-nowrap">
-                  {year}
-                </div>
-
-                {/* Timeline Dot */}
-                <div className="w-5 h-5 bg-primary rounded-full border-4 border-background shadow-[0_0_15px_rgba(var(--primary-rgb),0.8)] z-10 mb-8 group-hover:scale-150 transition-transform" />
-
-                {/* Content Card */}
-                <div className="w-full bg-card/80 backdrop-blur-md rounded-2xl p-6 border border-border shadow-xl hover:border-primary/50 transition-colors mt-2 relative">
-
-                  {isAdmin && (
-                    <div className="absolute top-3 right-3 flex gap-1 z-40 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleToggleHide(work)} className="p-1.5 bg-background border border-border rounded-full hover:text-primary shadow-sm"><Eye className="w-3.5 h-3.5" /></button>
-                      <button onClick={() => handleEdit(work)} className="p-1.5 bg-background border border-border text-primary rounded-full shadow-sm"><Edit2 className="w-3.5 h-3.5" /></button>
-                      <button onClick={() => handleDelete(work.id)} className="p-1.5 bg-background border border-border text-red-500 rounded-full shadow-sm"><Trash2 className="w-3.5 h-3.5" /></button>
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 rounded-xl bg-background flex items-center justify-center overflow-hidden border border-border/50 shrink-0 shadow-sm">
-                      {work.logo_url ? (
-                        <img src={work.logo_url} className="w-full h-full object-contain p-1.5" alt="Logo" />
-                      ) : (
-                        <Building2 className="w-6 h-6 text-muted-foreground/50" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-bold font-sans text-lg text-foreground truncate" title={language === 'vi' && work.company_vi ? work.company_vi : work.company}>
-                        {language === 'vi' && work.company_vi ? work.company_vi : work.company}
-                      </h3>
-                      <p className="text-sm font-sans font-bold text-primary truncate">
-                        {language === 'vi' && work.role_vi ? work.role_vi : work.role}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 mt-4 pt-4 border-t border-border/50 text-sm font-sans text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <Briefcase className="w-4 h-4 text-primary/70 shrink-0" />
-                      <span className="truncate">{language === 'vi' && work.work_type_vi ? work.work_type_vi : work.work_type}</span>
-                    </div>
-                    {((language === 'vi' && work.location_vi) || work.location) && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-primary/70 shrink-0" />
-                        <span className="truncate">{language === 'vi' && work.location_vi ? work.location_vi : work.location}</span>
-                      </div>
-                    )}
-                    <div className="flex items-center gap-2 text-xs font-mono font-bold pt-2 mt-2 border-t border-border/30">
-                      {formatDate(work.start_date)} — {formatDate(work.end_date)}
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {/* S shape format
-      
-      {visibleWorks.length > 0 && !editingId && (
         <div className="w-full max-w-[1200px] mx-auto pb-24 pt-12 px-4 overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
           <div className="min-w-[964px] md:min-w-[1114px] mx-auto grid grid-cols-3 gap-x-8 gap-y-16 relative">
             {sortedWorks.map((work, idx) => {
@@ -317,8 +243,6 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
           </div>
         </div>
       )}
-      */}
-
     </section>
   );
 }
