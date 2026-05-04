@@ -14,7 +14,7 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
   const [loading, setLoading] = useState(false);
 
   const visibleWorks = isAdmin ? works : works.filter(w => !w.is_hidden);
-  
+
   const sortedWorks = [...visibleWorks].sort((a, b) => {
     const timeA = a.start_date ? new Date(a.start_date).getTime() : new Date().getTime();
     const timeB = b.start_date ? new Date(b.start_date).getTime() : new Date().getTime();
@@ -96,10 +96,10 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
 
   return (
     <section id="work" className="py-24 max-w-[1400px] mx-auto relative flex flex-col justify-center min-h-[60vh] overflow-hidden">
-      <ConfirmModal 
+      <ConfirmModal
         isOpen={!!confirmId}
-        title="Delete Work History"
-        message="Are you sure you want to remove this work history entry? This action cannot be undone."
+        title="Delete Work Experience"
+        message="Are you sure you want to remove this work experience entry? This action cannot be undone."
         confirmText="Delete"
         onConfirm={doDelete}
         onCancel={() => setConfirmId(null)}
@@ -115,7 +115,7 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
         <div className="flex justify-center mb-8">
           <Building2 className="w-24 h-24 text-primary opacity-80" />
         </div>
-        <h2 className="text-5xl md:text-7xl font-sans font-bold tracking-tight mb-6 text-primary">{t.sections.workTitle || "Work History"}</h2>
+        <h2 className="text-5xl md:text-7xl font-sans font-bold tracking-tight mb-6 text-primary">{t.sections.workTitle || "Work Experience"}</h2>
         <div className="flex items-center justify-center mb-6">
           <div className="h-[2px] w-12 bg-primary/20" />
           <div className="w-3 h-3 bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary-rgb),0.8)] mx-4" />
@@ -141,21 +141,21 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
       )}
 
       {visibleWorks.length === 0 && !editingId && (
-        <div className="text-center py-20 text-muted-foreground opacity-70 font-mono z-10 relative"> No work history logged. </div>
+        <div className="text-center py-20 text-muted-foreground opacity-70 font-mono z-10 relative"> No work experience logged. </div>
       )}
 
       {visibleWorks.length > 0 && !editingId && (
         <div className="relative w-full overflow-x-auto pb-12 pt-8 px-8 snap-x snap-mandatory flex gap-8 items-start scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
           {/* Horizontal Connecting Line */}
           <div className="absolute top-[5rem] left-8 right-8 h-[2px] bg-primary/30 -z-10 rounded-full" />
-          
+
           {sortedWorks.map((work, idx) => {
             const year = getYear(work.start_date);
             const isHidden = work.is_hidden;
-            
+
             return (
               <div key={work.id} className={`snap-center shrink-0 w-[300px] md:w-[350px] relative flex flex-col items-center group transition-all ${isHidden ? 'opacity-50 grayscale' : ''}`}>
-                
+
                 {/* Year Badge */}
                 <div className="bg-background text-primary font-mono text-sm font-bold px-4 py-1.5 rounded-full border border-primary/40 shadow-md mb-5 z-10 whitespace-nowrap">
                   {year}
@@ -166,7 +166,7 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
 
                 {/* Content Card */}
                 <div className="w-full bg-card/80 backdrop-blur-md rounded-2xl p-6 border border-border shadow-xl hover:border-primary/50 transition-colors mt-2 relative">
-                  
+
                   {isAdmin && (
                     <div className="absolute top-3 right-3 flex gap-1 z-40 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                       <button onClick={() => handleToggleHide(work)} className="p-1.5 bg-background border border-border rounded-full hover:text-primary shadow-sm"><Eye className="w-3.5 h-3.5" /></button>
@@ -205,7 +205,7 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
                       </div>
                     )}
                     <div className="flex items-center gap-2 text-xs font-mono font-bold pt-2 mt-2 border-t border-border/30">
-                       {formatDate(work.start_date)} — {formatDate(work.end_date)}
+                      {formatDate(work.start_date)} — {formatDate(work.end_date)}
                     </div>
                   </div>
                 </div>
@@ -242,7 +242,7 @@ function WorkForm({ language, formData, setFormData, handleSave, handleCancel, l
       <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
         <h3 className="font-bold text-xl text-primary font-mono">&lt; Edit_Work_History /&gt;</h3>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
         <div className="space-y-4 bg-card/50 p-6 rounded-3xl border border-border">
           <div className="flex items-center gap-2 mb-2"><span className="text-2xl">🇺🇸</span> <span className="font-bold text-sm">English</span></div>
@@ -280,7 +280,7 @@ function WorkForm({ language, formData, setFormData, handleSave, handleCancel, l
 
       <div className="flex justify-end gap-3 pt-6 border-t border-border mt-8">
         <button type="button" onClick={handleCancel} className="px-6 py-2 border rounded-xl bg-background font-bold hover:bg-muted">Cancel</button>
-        <button type="button" onClick={handleSave} disabled={loading} className="px-8 py-2 bg-primary text-primary-foreground font-bold rounded-xl hover:opacity-90">{loading ? "Saving..." : "Save Work History"}</button>
+        <button type="button" onClick={handleSave} disabled={loading} className="px-8 py-2 bg-primary text-primary-foreground font-bold rounded-xl hover:opacity-90">{loading ? "Saving..." : "Save Work Experience"}</button>
       </div>
     </div>
   )

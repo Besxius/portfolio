@@ -22,7 +22,7 @@ export const translations = {
       projectsTitle: "Featured Projects",
       skillsTitle: "Skills",
       contactTitle: "Contact",
-      workTitle: "Work History",
+      workTitle: "Work Experience",
       workDesc: "My professional career journey",
       experienceTitle: "Projects",
       experienceDesc: "My prominent projects and detailed experiences",
