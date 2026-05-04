@@ -50,7 +50,7 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-10 font-sans font-medium text-sm">
             <a href="#" className="hover:text-primary transition-colors text-primary">{t.nav.home}</a>
             <a href="#work" className="hover:text-primary transition-colors">{t.nav.work}</a>
-            <a href="#experience" className="hover:text-primary transition-colors">{t.nav.experience}</a>
+            <a href="#projects" className="hover:text-primary transition-colors">{t.nav.experience}</a>
             <a href="#skills" className="hover:text-primary transition-colors">{t.nav.skills}</a>
             <a href="#contact" className="hover:text-primary transition-colors">{t.nav.contact}</a>
           </div>
@@ -98,7 +98,7 @@ export function Navbar() {
           <div className="md:hidden p-4 bg-background border-b border-border flex flex-col gap-4 font-sans text-sm">
             <a href="#" onClick={() => setIsOpen(false)}>{t.nav.home}</a>
             <a href="#work" onClick={() => setIsOpen(false)}>{t.nav.work}</a>
-            <a href="#experience" onClick={() => setIsOpen(false)}>{t.nav.experience}</a>
+            <a href="#projects" onClick={() => setIsOpen(false)}>{t.nav.experience}</a>
             <a href="#skills" onClick={() => setIsOpen(false)}>{t.nav.skills}</a>
             <a href="#contact" onClick={() => setIsOpen(false)}>{t.nav.contact}</a>
             <div className="flex flex-col gap-2 pt-4 border-t border-border mt-2">

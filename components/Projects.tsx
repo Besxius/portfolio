@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { Loader2, Edit2, Plus, Trash2, Check, X, Eye, EyeOff, Code, ExternalLink, Calendar, Briefcase, ChevronLeft, ChevronRight, XCircle, Code2 } from "lucide-react";
 import { ConfirmModal } from "./ConfirmModal";
 
-export function Experience({ initialProjects }: { initialProjects: any[] }) {
+export function Projects({ initialProjects }: { initialProjects: any[] }) {
   const { t, isAdmin, language } = useAppContext();
   const [projects, setProjects] = useState(initialProjects);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -87,12 +87,12 @@ export function Experience({ initialProjects }: { initialProjects: any[] }) {
   };
 
   return (
-    <section id="experience" className="py-24 max-w-[1400px] mx-auto relative flex flex-col justify-center min-h-[90vh] overflow-hidden">
-      <ConfirmModal 
+    <section id="projects" className="py-24 max-w-[1400px] mx-auto relative flex flex-col justify-center min-h-[90vh] overflow-hidden">
+      <ConfirmModal
         isOpen={!!confirmId}
-        title="Delete Experience"
-        message="Are you sure you want to remove this experience entry? This action cannot be undone."
-        confirmText="Delete"
+        title={language === 'vi' ? 'Xóa Dự Án' : 'Delete Project'}
+        message={language === 'vi' ? 'Bạn có chắc chắn muốn xóa dự án này không? Hành động này không thể hoàn tác.' : 'Are you sure you want to remove this project? This action cannot be undone.'}
+        confirmText={t.admin.delete || "Delete"}
         onConfirm={doDelete}
         onCancel={() => setConfirmId(null)}
       />
@@ -278,6 +278,12 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
           )}
         </p>
 
+        {expanded && (
+          <button onClick={() => setExpanded(false)} className="text-sm text-primary font-bold hover:underline transition-colors mb-6 inline-block">
+            {language === 'vi' ? 'Ẩn bớt' : 'Show less'}
+          </button>
+        )}
+
         {features && Array.isArray(features) && features.length > 0 && (
           <div className="mb-6">
             <h4 className="text-sm font-bold font-sans text-primary mb-3 flex items-center gap-1">
@@ -295,12 +301,6 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
               </button>
             )}
           </div>
-        )}
-
-        {expanded && (
-          <button onClick={() => setExpanded(false)} className="text-sm text-primary font-bold hover:underline transition-colors mb-6 inline-block">
-            {language === 'vi' ? 'Ẩn bớt' : 'Show less'}
-          </button>
         )}
 
         {proj.tags && proj.tags.length > 0 && (
