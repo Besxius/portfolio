@@ -280,7 +280,10 @@ function ExperienceCard({ proj, isAdmin, language, handleToggleHide, handleEdit,
 
         {features && Array.isArray(features) && features.length > 0 && (
           <div className="mb-6">
-            <h4 className="text-sm font-bold font-sans text-primary mb-3">{language === 'vi' ? '✨ Tính Năng Nổi Bật:' : '✨ Key Features:'}</h4>
+            <h4 className="text-sm font-bold font-sans text-primary mb-3 flex items-center gap-1">
+              <ChevronRight className="w-4 h-4" />
+              {language === 'vi' ? 'Tính Năng Nổi Bật:' : 'Key Features:'}
+            </h4>
             <ul className="list-disc pl-5 space-y-1.5 text-sm font-sans text-muted-foreground">
               {(expanded ? features : features.slice(0, 3)).map((feature: string, idx: number) => (
                 <li key={idx} className="pl-1 leading-relaxed">{feature}</li>
