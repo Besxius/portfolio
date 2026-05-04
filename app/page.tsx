@@ -20,8 +20,8 @@ export default async function Home() {
 
   return (
     <div className="space-y-32 pb-16">
-      <Hero 
-        initialProfile={profile} 
+      <Hero
+        initialProfile={profile}
         initialStats={{
           languages: languages?.length || 0,
           frameworks: frameworks?.length || 0,
@@ -30,7 +30,7 @@ export default async function Home() {
       />
       <Work initialWorks={works || []} />
       <Projects initialProjects={projects || []} />
-      <Skills 
+      <Skills
         initialLanguages={languages || []}
         initialFrameworks={frameworks || []}
         initialDevTools={devTools || []}
