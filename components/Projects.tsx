@@ -557,7 +557,8 @@ function ExperienceModal({ proj, onClose, language }: any) {
 
           {features && Array.isArray(features) && features.length > 0 && (
             <div className="mb-8 p-5 bg-muted/20 border border-border/50 rounded-2xl shadow-inner">
-              <h3 className="text-lg font-bold font-sans text-primary mb-3">{language === 'vi' ? '✨ Tính Năng Nổi Bật' : '✨ Key Features'}</h3>
+              <h3 className="text-lg font-bold font-sans text-primary mb-3 flex items-center gap-1"><ChevronRight className="w-4 h-4" />
+                {language === 'vi' ? 'Tính Năng Nổi Bật:' : 'Key Features:'}</h3>
               <ul className="list-disc pl-5 space-y-1 prose prose-sm md:prose-base dark:prose-invert max-w-none font-sans leading-relaxed text-foreground/80 marker:text-primary/70">
                 {features.map((feature: string, idx: number) => (
                   <li key={idx} className="pl-1">{feature}</li>

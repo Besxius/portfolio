@@ -12,6 +12,7 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
     title: "Software Engineering Student", title_vi: "Sinh viên Kỹ thuật Phần mềm",
     bio: "", bio_vi: "",
     avatar_url: "", avatar_x: 50, avatar_y: 50, avatar_scale: 1,
+    cv_url: "",
     email: "", location: "Vietnam / Remote", work_format: "Full-time / Freelancer",
     github_url: "", linkedin_url: "", facebook_url: "", instagram_url: "",
     stats_languages: 4, stats_tools: 6, stats_experience: 2,
@@ -22,7 +23,26 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingCV, setUploadingCV] = useState(false);
   const [formData, setFormData] = useState(profile);
+
+  const handleCVUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingCV(true);
+    const fileExt = file.name.split('.').pop();
+    const fileName = `cv_${Math.random()}.${fileExt}`;
+    const filePath = `profile/${fileName}`;
+    const { error: uploadError } = await supabase.storage.from('portfolio-images').upload(filePath, file);
+    if (!uploadError) {
+      const { data } = supabase.storage.from('portfolio-images').getPublicUrl(filePath);
+      setFormData({ ...formData, cv_url: data.publicUrl });
+    } else {
+      console.error(uploadError);
+      alert("Failed to upload CV. Please check your storage permissions.");
+    }
+    setUploadingCV(false);
+  };
 
   const [isDragging, setIsDragging] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
@@ -180,6 +200,18 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
                     </div>
                   </div>
                 )}
+                
+                <div className="w-full mt-6 pt-6 border-t border-border flex flex-col items-center">
+                  <label className="cursor-pointer bg-card text-foreground border border-border px-6 py-2.5 rounded-xl text-sm font-bold mb-2 flex items-center gap-2 shadow-sm hover:bg-muted transition-colors">
+                    <input type="file" accept=".pdf,application/pdf" onChange={handleCVUpload} className="hidden" />
+                    {uploadingCV ? <Loader2 className="w-4 h-4 animate-spin" /> : "Upload New CV (PDF)"}
+                  </label>
+                  {formData.cv_url && (
+                    <a href={formData.cv_url} target="_blank" rel="noreferrer" className="text-xs text-primary hover:underline flex items-center gap-1 mt-2">
+                      <Check className="w-3 h-3" /> CV Updated (Save to apply)
+                    </a>
+                  )}
+                </div>
               </div>
 
               <div className="p-6 bg-background/30 rounded-3xl border border-border flex flex-col items-center justify-center">
@@ -272,7 +304,7 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
                   {profile.instagram_url && <a href={profile.instagram_url} target="_blank" className="hover:text-primary transition-colors"><Instagram className="w-5 h-5" /></a>}
                 </div>
 
-                <a href="/CV_LeDucTrong.pdf" target="_blank" rel="noreferrer" className="w-full py-3 bg-foreground text-background font-bold text-sm rounded-full flex justify-center items-center gap-2 hover:bg-primary hover:text-primary-foreground transition-all mt-6">
+                <a href={profile.cv_url || "/CV_LeDucTrong.pdf"} target="_blank" rel="noreferrer" className="w-full py-3 bg-foreground text-background font-bold text-sm rounded-full flex justify-center items-center gap-2 hover:bg-primary hover:text-primary-foreground transition-all mt-6">
                   Download CV <Download className="w-4 h-4" />
                 </a>
               </div>
