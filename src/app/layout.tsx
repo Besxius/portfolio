@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Fira_Code, Be_Vietnam_Pro, Inter, Montserrat } from "next/font/google";
-import "./globals.css";
+import "../styles/globals.css";
 import { AppProviders } from "@/components/providers";
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/components/layout/Navbar";
 
 import { supabase } from "@/lib/supabase";
 
