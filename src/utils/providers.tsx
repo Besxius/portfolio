@@ -22,7 +22,7 @@ const AppContext = React.createContext<AppContextType | undefined>(undefined);
 
 export function AppProviders({ children, ...props }: ThemeProviderProps) {
   const [language, setLanguage] = React.useState<Language>('en');
-  const [colorTheme, setColorTheme] = React.useState<'blue' | 'green'>('green');
+  const [colorTheme, setColorTheme] = React.useState<'blue' | 'green'>('blue');
   const [fontTheme, setFontTheme] = React.useState<string>('sans');
   const [isAdmin, setIsAdmin] = React.useState(false);
 

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useMemo, useRef } from "react";
-import { useAppContext } from "@/components/providers";
+import { useAppContext } from "@/utils/providers";
 import { supabase } from "@/lib/supabase";
 import { Loader2, Edit2, Plus, Trash2, Eye, ExternalLink, Code, X, XCircle, ChevronLeft, ChevronRight, Briefcase } from "lucide-react";
-import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 
 export function Projects({ initialProjects }: { initialProjects: any[] }) {
   const { t, isAdmin, language } = useAppContext();
@@ -142,16 +142,16 @@ function ProjectCard({ proj, isAdmin, language, handleToggleHide, handleEdit, ha
 
       <div className="w-full aspect-video bg-muted overflow-hidden cursor-pointer relative" onClick={onOpen}>
         {cover ? (
-           <img src={cover.url} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt={title} />
+          <img src={cover.url} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt={title} />
         ) : (
-           <div className="w-full h-full flex items-center justify-center text-muted-foreground/50"><Briefcase className="w-10 h-10" /></div>
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground/50"><Briefcase className="w-10 h-10" /></div>
         )}
       </div>
 
       <div className="p-5 flex flex-col flex-1">
         <h3 className="font-bold text-lg text-foreground mb-1 line-clamp-1">{title}</h3>
         {role && <span className="text-xs font-mono text-muted-foreground mb-3">{role}</span>}
-        
+
         <p className="text-sm text-muted-foreground line-clamp-2 mb-4 flex-1">
           {desc}
         </p>
@@ -246,7 +246,7 @@ function ProjectForm({ language, formData, setFormData, handleSave, handleCancel
           <input type="file" accept="image/*" onChange={uploadImage} disabled={uploadingImage} className="hidden" />
           {uploadingImage ? "Uploading..." : "Add Image"}
         </label>
-        
+
         {images.length > 0 && (
           <div className="flex gap-2 flex-wrap">
             {images.map((img: any, i: number) => (
@@ -294,7 +294,7 @@ function ProjectModal({ proj, onClose, language }: any) {
     <div className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-8" onClick={onClose}>
       <div className="bg-card w-full max-w-4xl max-h-[90vh] rounded-2xl border border-border shadow-2xl flex flex-col relative overflow-hidden" onClick={e => e.stopPropagation()}>
         <button onClick={onClose} className="absolute top-4 right-4 z-50 p-2 bg-background/80 rounded-full hover:bg-muted text-foreground border border-border"><X className="w-4 h-4" /></button>
-        
+
         <div className="overflow-y-auto flex-1 p-6 md:p-8">
           {images.length > 0 && (
             <div className="w-full rounded-xl overflow-hidden bg-muted mb-8 relative">

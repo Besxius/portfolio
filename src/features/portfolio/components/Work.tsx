@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useAppContext } from "@/components/providers";
+import { useAppContext } from "@/utils/providers";
 import { supabase } from "@/lib/supabase";
 import { Loader2, Edit2, Plus, Trash2, Eye, Building2, MapPin, Briefcase, Code2, ChevronDown, RefreshCw } from "lucide-react";
-import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 
 export function Work({ initialWorks }: { initialWorks: any[] }) {
   const { t, isAdmin, language } = useAppContext();
@@ -23,11 +23,11 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
 
   // Group by company
   const groupedWorks: { company: string, logo_url: string, location: string, roles: any[] }[] = [];
-  
+
   sortedWorks.forEach(work => {
     const companyName = language === 'vi' && work.company_vi ? work.company_vi : work.company;
     const locationStr = language === 'vi' && work.location_vi ? work.location_vi : work.location;
-    
+
     let group = groupedWorks.find(g => g.company === companyName);
     if (!group) {
       group = {
@@ -114,20 +114,20 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
     if (!start) return "";
     const d1 = new Date(start);
     const d2 = end ? new Date(end) : new Date();
-    
+
     let months = (d2.getFullYear() - d1.getFullYear()) * 12;
     months -= d1.getMonth();
     months += d2.getMonth();
-    
+
     if (months <= 0) return "1m";
-    
+
     const y = Math.floor(months / 12);
     const m = months % 12;
-    
+
     const res = [];
     if (y > 0) res.push(`${y}y`);
     if (m > 0) res.push(`${m}m`);
-    
+
     return res.join(" ");
   };
 
@@ -177,7 +177,7 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
         <div className="flex flex-col w-full">
           {groupedWorks.map((group, groupIndex) => (
             <div key={groupIndex} className="flex flex-col border-b border-border/50 py-8 first:pt-0 last:border-0 relative">
-              
+
               {/* Company Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4">
@@ -216,7 +216,7 @@ export function Work({ initialWorks }: { initialWorks: any[] }) {
 
                   return (
                     <div key={work.id} className={`group/role flex gap-6 relative z-10 ${isHidden ? 'opacity-50 grayscale' : ''}`}>
-                      
+
                       {/* Timeline Dot Icon */}
                       <div className="flex flex-col items-center mt-1">
                         <div className="w-8 h-8 rounded-full border border-border bg-card flex items-center justify-center shrink-0 z-10">

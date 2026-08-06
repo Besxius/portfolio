@@ -1,11 +1,11 @@
 "use client";
 
-import { useAppContext } from "@/components/providers";
+import { useAppContext } from "@/utils/providers";
 import { GraduationCap, ChevronDown } from "lucide-react";
 
 export function Education() {
   const { language } = useAppContext();
-  
+
   // Hardcoded FPT University data
   const educations = [
     {
@@ -33,7 +33,7 @@ export function Education() {
           const schoolName = language === 'vi' ? edu.school_vi : edu.school;
           const degreeName = language === 'vi' ? edu.degree_vi : edu.degree;
           const majorName = language === 'vi' ? edu.major_vi : edu.major;
-          
+
           return (
             <div key={edu.id} className="group relative flex flex-col border-b border-border/50 py-8 first:pt-0 last:border-0">
               <div className="flex gap-4">
@@ -57,7 +57,7 @@ export function Education() {
                       <ChevronDown className="w-4 h-4" />
                     </button>
                   </div>
-                  
+
                   {/* Meta (Dates, Degree, Major) */}
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground mb-4">
                     <span className="font-mono text-xs">{edu.startDate} — {edu.endDate}</span>

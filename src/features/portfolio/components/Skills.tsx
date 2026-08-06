@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useAppContext } from "@/components/providers";
+import { useAppContext } from "@/utils/providers";
 import { supabase } from "@/lib/supabase";
 import { Edit2, Plus, Trash2, Check, X, Code2 } from "lucide-react";
-import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { useRouter } from "next/navigation";
 
 // Minimal LevelBar (optional in new design, maybe hide it or keep it small)
@@ -52,7 +52,7 @@ function CategoryEditor({ title, table, items, setItems, hasLogo = true, onChang
     if (!newName.trim()) return;
     const payload: any = { name: newName.trim(), level: newLevel };
     if (hasLogo) payload.logo_url = newLogo;
-    
+
     const { data, error } = await supabase.from(table).insert([payload]).select();
     if (!error && data) {
       setItems([...items, data[0]]);
@@ -88,23 +88,23 @@ function CategoryEditor({ title, table, items, setItems, hasLogo = true, onChang
     <div className="space-y-4 bg-card p-4 rounded-xl border border-border flex flex-col font-sans">
       <ConfirmModal isOpen={!!confirmId} title="Delete Skill" message="Are you sure you want to remove this item?" confirmText="Delete" onConfirm={doDelete} onCancel={() => setConfirmId(null)} />
       <h4 className="font-bold text-sm border-b border-border pb-2 text-foreground truncate">{title}</h4>
-      
+
       <form onSubmit={handleAdd} className="space-y-3 shrink-0 w-full">
         <input value={newName} onChange={e => setNewName(e.target.value)} className="w-full px-3 py-1.5 rounded-md border border-input bg-background text-sm outline-none focus:ring-1 focus:ring-foreground" placeholder={`Add ${title}...`} />
         <div className="flex flex-col gap-1">
-           <span className="text-[10px] uppercase text-muted-foreground">Level</span>
-           <LevelBars level={newLevel} onChange={setNewLevel} />
+          <span className="text-[10px] uppercase text-muted-foreground">Level</span>
+          <LevelBars level={newLevel} onChange={setNewLevel} />
         </div>
         {hasLogo && (
           <div className="flex items-center gap-2 mt-1">
             <label className="cursor-pointer flex-1 bg-muted text-foreground px-2 py-1.5 text-xs font-medium rounded-md text-center hover:bg-muted/80 truncate border border-border">
-              <input type="file" accept="image/*" onChange={e => handleUpload(e, setNewLogo)} className="hidden"/>
+              <input type="file" accept="image/*" onChange={e => handleUpload(e, setNewLogo)} className="hidden" />
               {uploading ? "..." : "Upload Logo"}
             </label>
-            {newLogo && <img src={newLogo} alt="Logo" className="w-7 h-7 rounded shrink-0 object-contain bg-white p-0.5" /> }
+            {newLogo && <img src={newLogo} alt="Logo" className="w-7 h-7 rounded shrink-0 object-contain bg-white p-0.5" />}
           </div>
         )}
-        <button type="submit" disabled={!newName || uploading} className="w-full py-1.5 bg-foreground text-background font-medium rounded-md text-sm hover:opacity-90"><Plus className="w-4 h-4 inline-block mr-1"/> Add</button>
+        <button type="submit" disabled={!newName || uploading} className="w-full py-1.5 bg-foreground text-background font-medium rounded-md text-sm hover:opacity-90"><Plus className="w-4 h-4 inline-block mr-1" /> Add</button>
       </form>
 
       <div className="space-y-2 mt-2 max-h-48 overflow-y-auto pr-1 flex-1">
@@ -112,8 +112,8 @@ function CategoryEditor({ title, table, items, setItems, hasLogo = true, onChang
           <div key={item.id} className="p-2 rounded-md border border-border bg-background flex flex-col gap-2">
             {editingId === item.id ? (
               <div className="space-y-2">
-                <input value={editData.name} onChange={e => setEditData({...editData, name: e.target.value})} className="w-full px-2 py-1 rounded text-sm border border-input bg-background" />
-                <LevelBars level={editData.level} onChange={(val) => setEditData({...editData, level: val})} />
+                <input value={editData.name} onChange={e => setEditData({ ...editData, name: e.target.value })} className="w-full px-2 py-1 rounded text-sm border border-input bg-background" />
+                <LevelBars level={editData.level} onChange={(val) => setEditData({ ...editData, level: val })} />
                 <div className="flex gap-2">
                   <button onClick={saveEdit} disabled={uploading} className="flex-1 py-1 bg-foreground text-background rounded text-xs">Save</button>
                   <button onClick={() => setEditingId(null)} className="flex-1 py-1 bg-muted rounded text-xs border border-border">Cancel</button>
@@ -123,8 +123,8 @@ function CategoryEditor({ title, table, items, setItems, hasLogo = true, onChang
               <div className="flex justify-between items-center gap-2">
                 <span className="font-medium text-sm truncate">{item.name}</span>
                 <div className="flex gap-1 shrink-0">
-                  <button onClick={() => startEdit(item)} className="p-1 text-muted-foreground hover:text-foreground"><Edit2 className="w-3.5 h-3.5"/></button>
-                  <button onClick={() => setConfirmId(item.id)} className="p-1 text-red-500/70 hover:text-red-500"><Trash2 className="w-3.5 h-3.5"/></button>
+                  <button onClick={() => startEdit(item)} className="p-1 text-muted-foreground hover:text-foreground"><Edit2 className="w-3.5 h-3.5" /></button>
+                  <button onClick={() => setConfirmId(item.id)} className="p-1 text-red-500/70 hover:text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
                 </div>
               </div>
             )}

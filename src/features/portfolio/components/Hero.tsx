@@ -1,12 +1,18 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useAppContext } from "@/components/providers";
+import { useAppContext } from "@/utils/providers";
 import { supabase } from "@/lib/supabase";
-import { Loader2, Edit2, Check, X, Mail, Facebook, Linkedin, Download, MapPin, Code2, Briefcase, Github, Instagram, Volume2, Link as LinkIcon, Phone, Clock, User, MessageSquare, Youtube, Twitter } from "lucide-react";
+import { Loader2, Edit2, Check, X, Mail, Facebook, Linkedin, Download, MapPin, Code2, Briefcase, Github, Instagram, Volume2, Link as LinkIcon, Phone, Clock, User, MessageSquare, Youtube, Twitter, Activity, Grid, Terminal } from "lucide-react";
+import LogoLoop from "@/components/ui/logo-loop";
+import SplitFlapText from "@/components/ui/split-flap-text";
+import { TLMarkIsometric } from "@/components/ui/tl-mark-isometric";
+import { TLMarkLightRays } from "@/components/ui/tl-mark-light-rays";
 
 export function Hero({ initialProfile, initialStats }: { initialProfile: any, initialStats?: any }) {
-  const { t, isAdmin, language } = useAppContext();
+  const { t, isAdmin, language, colorTheme } = useAppContext();
+  const accentColor = colorTheme === "blue" ? "#38bdf8" : "#34d399";
+
   const defaultProfile = {
     full_name: "Le Duc Trong",
     title: "Software Engineering Student", title_vi: "Sinh viên Kỹ thuật Phần mềm",
@@ -175,24 +181,24 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
                       <img src={formData.avatar_url} draggable="false" className="w-full h-full object-cover pointer-events-none"
                         style={{ objectPosition: `${formData.avatar_x || 50}% ${formData.avatar_y || 50}%`, transform: `scale(${formData.avatar_scale || 1})` }} />
                     </div>
-                    
+
                     <div className="w-full space-y-4 text-xs font-mono">
                       <div className="flex flex-col gap-1 w-full">
-                         <span className="text-muted-foreground">Zoom</span>
-                         <input type="range" min="1" max="4" step="0.1" value={formData.avatar_scale || 1} onChange={e => setFormData({ ...formData, avatar_scale: e.target.value })} className="w-full" />
+                        <span className="text-muted-foreground">Zoom</span>
+                        <input type="range" min="1" max="4" step="0.1" value={formData.avatar_scale || 1} onChange={e => setFormData({ ...formData, avatar_scale: e.target.value })} className="w-full" />
                       </div>
                       <div className="flex flex-col gap-1 w-full">
-                         <span className="text-muted-foreground">X Position</span>
-                         <input type="range" min="0" max="100" step="1" value={formData.avatar_x || 50} onChange={e => setFormData({ ...formData, avatar_x: e.target.value })} className="w-full" />
+                        <span className="text-muted-foreground">X Position</span>
+                        <input type="range" min="0" max="100" step="1" value={formData.avatar_x || 50} onChange={e => setFormData({ ...formData, avatar_x: e.target.value })} className="w-full" />
                       </div>
                       <div className="flex flex-col gap-1 w-full">
-                         <span className="text-muted-foreground">Y Position</span>
-                         <input type="range" min="0" max="100" step="1" value={formData.avatar_y || 50} onChange={e => setFormData({ ...formData, avatar_y: e.target.value })} className="w-full" />
+                        <span className="text-muted-foreground">Y Position</span>
+                        <input type="range" min="0" max="100" step="1" value={formData.avatar_y || 50} onChange={e => setFormData({ ...formData, avatar_y: e.target.value })} className="w-full" />
                       </div>
                     </div>
                   </div>
                 )}
-                
+
                 <div className="w-full mt-6 pt-6 border-t border-border flex flex-col items-center">
                   <label className="cursor-pointer bg-card text-foreground border border-border px-6 py-2.5 rounded-md text-sm font-medium mb-2 flex items-center gap-2 hover:bg-muted transition-colors">
                     <input type="file" accept=".pdf,application/pdf" onChange={handleCVUpload} className="hidden" />
@@ -211,148 +217,135 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
         </div>
       ) : (
         <div className="max-w-4xl mx-auto w-full z-10 font-mono flex flex-col relative">
-          
-          {/* Top Decorative Graphic (Abstract Isometric Cubes placeholder) */}
-          <div className="w-full flex justify-center mb-16 opacity-30 pointer-events-none select-none relative h-48 border-b border-border/50">
-             {/* Using simple SVG to mock the isometric wireframe cubes */}
-             <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" className="absolute bottom-0">
-                <g fill="none" stroke="currentColor" strokeWidth="1" strokeLinejoin="round">
-                  <path d="M200 50 L250 75 L200 100 L150 75 Z" />
-                  <path d="M150 75 L150 125 L200 150 L200 100" />
-                  <path d="M250 75 L250 125 L200 150 L200 100" />
-                  <path d="M120 90 L170 115 L120 140 L70 115 Z" />
-                  <path d="M70 115 L70 165 L120 190 L120 140" />
-                  <path d="M170 115 L170 165 L120 190 L120 140" />
-                  <path d="M280 90 L330 115 L280 140 L230 115 Z" />
-                  <path d="M230 115 L230 165 L280 190 L280 140" />
-                  <path d="M330 115 L330 165 L280 190 L280 140" />
-                </g>
-                <text x="380" y="190" fill="currentColor" fontSize="10" fontFamily="monospace" textAnchor="end" opacity="0.5">FIG_001</text>
-             </svg>
-          </div>
+          <div className="border border-border/50 rounded-sm bg-background/50 backdrop-blur-sm shadow-2xl overflow-hidden flex flex-col relative z-20">
+            {/* Header row: Profile Avatar & Name with integrated 3D 'TL' Mark + WebGL Light Rays as Full Background */}
+            <div className="flex items-end gap-6 p-6 md:p-8 border-b border-border/50 relative overflow-hidden min-h-[260px] md:min-h-[300px]">
+              {/* Integrated Top Decorative Graphic Background */}
+              <TLMarkLightRays raysColor={accentColor} raysOrigin="top-right" />
 
-          <div className="border border-border/50 rounded-sm bg-background/50 backdrop-blur-sm shadow-2xl overflow-hidden flex flex-col relative -mt-32 z-20">
-            {/* Header row: Profile Avatar & Name */}
-            <div className="flex items-end gap-6 p-6 md:p-8 border-b border-border/50 relative">
-               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border border-border shrink-0 bg-muted">
-                 {profile.avatar_url && (
-                   <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover"
-                        style={{ objectPosition: `${profile.avatar_x || 50}% ${profile.avatar_y || 50}%`, transform: `scale(${profile.avatar_scale || 1})` }} />
-                 )}
-               </div>
-               <div className="flex flex-col gap-2 pb-2">
-                 <div className="flex items-center gap-2">
-                   <h1 className="text-2xl md:text-3xl font-sans font-bold text-foreground tracking-tight">{displayFullName}</h1>
-                   <div className="w-5 h-5 rounded-full bg-foreground text-background flex items-center justify-center">
-                     <Check className="w-3 h-3" strokeWidth={3} />
-                   </div>
-                   <Volume2 className="w-4 h-4 text-muted-foreground ml-1" />
-                 </div>
-                 <p className="text-sm text-muted-foreground font-mono">
-                   I am a {displayTitle.toLowerCase()}.
-                 </p>
-               </div>
+              {/* Header profile content */}
+              <div className="relative z-10 flex items-end gap-6 w-full">
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border border-border shrink-0 bg-muted">
+                  {profile.avatar_url && (
+                    <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover"
+                      style={{ objectPosition: `${profile.avatar_x || 50}% ${profile.avatar_y || 50}%`, transform: `scale(${profile.avatar_scale || 1})` }} />
+                  )}
+                </div>
+                <div className="flex flex-col gap-2 pb-2">
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-2xl md:text-3xl font-sans font-bold text-foreground tracking-tight">{displayFullName}</h1>
+                    <div className="w-5 h-5 rounded-full bg-foreground text-background flex items-center justify-center">
+                      <Check className="w-3 h-3" strokeWidth={3} />
+                    </div>
+                    <Volume2 className="w-4 h-4 text-muted-foreground ml-1" />
+                  </div>
+                  <p className="text-sm text-muted-foreground font-mono">
+                    I am a {displayTitle.toLowerCase()}.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Info Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/50 text-xs text-muted-foreground font-mono">
-               {/* Left Column */}
-               <div className="flex flex-col p-6 gap-4">
-                 <div className="flex items-center gap-4">
-                   <Code2 className="w-4 h-4 shrink-0" />
-                   <span className="truncate">{displayTitle} <span className="text-foreground">@portfolio</span></span>
-                 </div>
-                 <div className="flex items-center gap-4">
-                   <Briefcase className="w-4 h-4 shrink-0" />
-                   <span className="truncate">Freelancer / Creator</span>
-                 </div>
-                 <div className="flex items-center gap-4">
-                   <MapPin className="w-4 h-4 shrink-0" />
-                   <span className="truncate">{profile.location}</span>
-                 </div>
-                 <div className="flex items-center gap-4">
-                   <Phone className="w-4 h-4 shrink-0" />
-                   <span className="truncate">+84 123 456 789</span> {/* Placeholder phone */}
-                 </div>
-                 <div className="flex items-center gap-4">
-                   <LinkIcon className="w-4 h-4 shrink-0" />
-                   <a href="#" className="truncate hover:text-foreground transition-colors underline underline-offset-2 decoration-border hover:decoration-foreground">trọng.dev</a>
-                 </div>
-               </div>
+              {/* Left Column */}
+              <div className="flex flex-col p-6 gap-4">
+                <div className="flex items-center gap-4">
+                  <Code2 className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{displayTitle} <span className="text-foreground">@portfolio</span></span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Briefcase className="w-4 h-4 shrink-0" />
+                  <span className="truncate">Freelancer / Creator</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <MapPin className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{profile.location}</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Phone className="w-4 h-4 shrink-0" />
+                  <span className="truncate">+84 378 661 398</span> {/* Placeholder phone */}
+                </div>
+                <div className="flex items-center gap-4">
+                  <LinkIcon className="w-4 h-4 shrink-0" />
+                  <a href="#" className="truncate hover:text-foreground transition-colors underline underline-offset-2 decoration-border hover:decoration-foreground">trọng.dev</a>
+                </div>
+              </div>
 
-               {/* Right Column */}
-               <div className="flex flex-col p-6 gap-4">
-                 <div className="flex items-center gap-4">
-                   <Clock className="w-4 h-4 shrink-0" />
-                   <span className="truncate">{currentTime || "Loading..."} <span className="opacity-50">// same time</span></span>
-                 </div>
-                 <div className="flex items-center gap-4">
-                   <Mail className="w-4 h-4 shrink-0" />
-                   <a href={`mailto:${profile.email}`} className="truncate hover:text-foreground transition-colors underline underline-offset-2 decoration-border hover:decoration-foreground">{profile.email || "hello@example.com"}</a>
-                 </div>
-                 <div className="flex items-center gap-4">
-                   <User className="w-4 h-4 shrink-0" />
-                   <span className="truncate">he/him</span>
-                 </div>
-               </div>
+              {/* Right Column */}
+              <div className="flex flex-col p-6 gap-4">
+                <div className="flex items-center gap-4">
+                  <Clock className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{currentTime || "Loading..."} <span className="opacity-50">// same time</span></span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Mail className="w-4 h-4 shrink-0" />
+                  <a href={`mailto:${profile.email}`} className="truncate hover:text-foreground transition-colors underline underline-offset-2 decoration-border hover:decoration-foreground">{profile.email || "hello@example.com"}</a>
+                </div>
+                <div className="flex items-center gap-4">
+                  <User className="w-4 h-4 shrink-0" />
+                  <span className="truncate">he/him</span>
+                </div>
+              </div>
             </div>
 
             {/* Social Links Bar */}
             <div className="border-t border-border/50 p-6 flex gap-4">
-               {profile.github_url && <a href={profile.github_url} target="_blank" rel="noreferrer" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><Github className="w-4 h-4" /></a>}
-               {profile.linkedin_url && <a href={profile.linkedin_url} target="_blank" rel="noreferrer" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><Linkedin className="w-4 h-4" /></a>}
-               <a href="#" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><Twitter className="w-4 h-4" /></a>
-               <a href={profile.cv_url} target="_blank" rel="noreferrer" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><LinkIcon className="w-4 h-4" /></a>
-               {profile.facebook_url && <a href={profile.facebook_url} target="_blank" rel="noreferrer" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><Facebook className="w-4 h-4" /></a>}
+              {profile.github_url && <a href={profile.github_url} target="_blank" rel="noreferrer" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><Github className="w-4 h-4" /></a>}
+              {profile.linkedin_url && <a href={profile.linkedin_url} target="_blank" rel="noreferrer" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><Linkedin className="w-4 h-4" /></a>}
+              <a href="#" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><Twitter className="w-4 h-4" /></a>
+              <a href={profile.cv_url} target="_blank" rel="noreferrer" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><LinkIcon className="w-4 h-4" /></a>
+              {profile.facebook_url && <a href={profile.facebook_url} target="_blank" rel="noreferrer" className="w-8 h-8 rounded border border-border/50 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"><Facebook className="w-4 h-4" /></a>}
             </div>
 
-            {/* Contribution Graph (Mock) */}
-            <div className="border-t border-border/50 p-6 flex flex-col gap-3">
-               <div className="flex text-[10px] uppercase tracking-wider text-muted-foreground gap-8 mb-1">
-                 <span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
-               </div>
-               <div className="grid grid-rows-7 grid-flow-col gap-1 overflow-x-auto pb-2" style={{ gridAutoColumns: 'max-content' }}>
-                 {Array.from({ length: 364 }).map((_, i) => {
-                    const intensity = Math.random();
-                    let bgColor = 'bg-border/30';
-                    if (intensity > 0.9) bgColor = 'bg-foreground';
-                    else if (intensity > 0.7) bgColor = 'bg-foreground/70';
-                    else if (intensity > 0.4) bgColor = 'bg-foreground/40';
-                    else if (intensity > 0.2) bgColor = 'bg-foreground/20';
+            {/* Split Flap Board (Prominent 1.5x Display - Contribution Graph Removed) */}
+            <div className="border-t border-border/50 p-6 md:p-8 flex flex-col gap-5 bg-card/30">
+              <div className="flex items-center justify-between border-b border-border/40 pb-3">
+                <span className="text-xs font-bold uppercase tracking-widest text-foreground/80 flex items-center gap-2 font-mono">
+                  <Terminal className="w-4 h-4" style={{ color: accentColor }} />
+                  System Status Board
+                </span>
+                <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest px-2.5 py-1 rounded bg-muted/60 border border-border/40 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: accentColor }}></span>
+                  Live Signal
+                </span>
+              </div>
 
-                    return <div key={i} className={`w-3 h-3 rounded-[2px] ${bgColor} transition-colors hover:border hover:border-foreground`}></div>
-                 })}
-               </div>
-               <div className="flex justify-between items-center text-[10px] text-muted-foreground mt-2">
-                 <span>2,141 contributions in the past 365 days.</span>
-                 <div className="flex items-center gap-1">
-                   <span>Less</span>
-                   <div className="w-3 h-3 bg-border/30 rounded-[2px]"></div>
-                   <div className="w-3 h-3 bg-foreground/20 rounded-[2px]"></div>
-                   <div className="w-3 h-3 bg-foreground/40 rounded-[2px]"></div>
-                   <div className="w-3 h-3 bg-foreground/70 rounded-[2px]"></div>
-                   <div className="w-3 h-3 bg-foreground rounded-[2px]"></div>
-                   <span>More</span>
-                 </div>
-               </div>
+              <div className="py-10 px-4 md:px-8 bg-background/90 rounded-xl border border-border/60 flex flex-col items-center justify-center overflow-x-auto min-h-[180px] shadow-inner">
+                <SplitFlapText
+                  words={[
+                    'LE DUC TRONG',
+                    'FULLSTACK DEV',
+                    'REACT & NEXTJS',
+                    'SIGNAL ONLINE',
+                    'AVAILABLE NOW',
+                    'CLEAN ARCHITECTURE'
+                  ]}
+                  fontSize="clamp(28px, 5.2vw, 54px)"
+                  gap={8}
+                  tileRadius={8}
+                  padTo={14}
+                  className="max-w-full"
+                />
+              </div>
             </div>
           </div>
 
           {/* Bio Section */}
           <div className="mt-16 text-sm font-sans space-y-4 px-4 text-muted-foreground max-w-3xl border-t border-border/50 pt-10">
-             <h3 className="font-serif italic text-2xl text-foreground mb-6">Good evening</h3>
-             
-             {displayBio ? (
-               <div className="space-y-4 leading-relaxed whitespace-pre-wrap pl-4 border-l-2 border-border/50">
-                 {displayBio}
-               </div>
-             ) : (
-               <ul className="space-y-4 list-disc pl-5 leading-relaxed">
-                 <li>I'm <span className="text-foreground font-semibold">{displayFullName}</span> — a {displayTitle} with a passion for clean code, solid architecture, and pixel-perfect UI.</li>
-                 <li>Focused on exploring new technologies and turning ideas into reality through polished, thoughtfully crafted projects.</li>
-                 <li>Available for full-time roles, freelance projects, and open-source contributions.</li>
-               </ul>
-             )}
+            <h3 className="font-serif italic text-2xl text-foreground mb-6">Good evening</h3>
+
+            {displayBio ? (
+              <div className="space-y-4 leading-relaxed whitespace-pre-wrap pl-4 border-l-2 border-border/50">
+                {displayBio}
+              </div>
+            ) : (
+              <ul className="space-y-4 list-disc pl-5 leading-relaxed">
+                <li>I'm <span className="text-foreground font-semibold">{displayFullName}</span> — a {displayTitle} with a passion for clean code, solid architecture, and pixel-perfect UI.</li>
+                <li>Focused on exploring new technologies and turning ideas into reality through polished, thoughtfully crafted projects.</li>
+                <li>Available for full-time roles, freelance projects, and open-source contributions.</li>
+              </ul>
+            )}
           </div>
         </div>
       )}

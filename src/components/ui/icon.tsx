@@ -14,7 +14,7 @@ export default async function Icon() {
     .select('avatar_url, avatar_x, avatar_y, avatar_scale')
     .order('updated_at', { ascending: false })
     .limit(1);
-    
+
   const profile = profiles?.[0];
   const avatarUrl = profile?.avatar_url;
 

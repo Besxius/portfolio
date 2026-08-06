@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAppContext } from "@/components/providers";
+import { useAppContext } from "@/utils/providers";
 import { supabase } from "@/lib/supabase";
 import { Loader2, Key, Mail, Github, Linkedin, Contact2 } from "lucide-react";
 

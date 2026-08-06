@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAppContext } from "@/components/providers";
+import { useAppContext } from "@/utils/providers";
 import { supabase } from "@/lib/supabase";
-import { Search, Command, Github, Moon, Sun, Menu, X } from "lucide-react";
+import { Search, Command, Github, Moon, Sun, Menu, X, Palette } from "lucide-react";
 import { useTheme } from "next-themes";
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
-  const { language, setLanguage, t } = useAppContext();
+  const { language, setLanguage, t, colorTheme, setColorTheme } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [nameInfo, setNameInfo] = useState({ en: 'Le Duc Trong', vi: 'Lê Đức Trọng', avatar: '', x: 50, y: 50, scale: 1 });
@@ -67,6 +67,20 @@ export function Navbar() {
 
             <div className="h-4 w-px bg-border mx-1"></div>
 
+            {/* Background Color Switcher */}
+            <button
+              onClick={() => setColorTheme(colorTheme === 'blue' ? 'green' : 'blue')}
+              className="group relative p-1.5 text-muted-foreground hover:text-foreground transition-colors border border-border rounded-md hover:bg-muted/50 flex items-center gap-1.5"
+              title={`Switch to ${colorTheme === 'blue' ? 'Dark Green' : 'Dark Blue'} theme`}
+            >
+              <Palette className="w-4 h-4" />
+              <span className={`w-2 h-2 rounded-full ${colorTheme === 'blue' ? 'bg-blue-500 shadow-[0_0_6px_rgba(59,130,246,0.8)]' : 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]'}`} />
+              <span className="text-xs font-mono font-medium capitalize hidden lg:inline">{colorTheme === 'blue' ? 'Blue' : 'Green'}</span>
+              <span className="absolute -bottom-8 right-0 bg-popover text-popover-foreground text-xs px-2 py-1 border border-border rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                Bg Color: {colorTheme === 'blue' ? 'Dark Blue' : 'Dark Green'}
+              </span>
+            </button>
+
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="group relative p-1.5 text-muted-foreground hover:text-foreground transition-colors border border-border rounded-md hover:bg-muted/50"
@@ -96,6 +110,18 @@ export function Navbar() {
             <a href="#projects" onClick={() => setIsOpen(false)}>{t.nav.experience}</a>
             <a href="#skills" onClick={() => setIsOpen(false)}>{t.nav.skills}</a>
             <div className="flex flex-col gap-3 pt-4 border-t border-border mt-2">
+              <button 
+                onClick={() => setColorTheme(colorTheme === 'blue' ? 'green' : 'blue')} 
+                className="text-left flex items-center justify-between"
+              >
+                <span className="flex items-center gap-2">
+                  <Palette className="w-4 h-4" />
+                  <span>Background Color</span>
+                </span>
+                <span className={`text-xs px-2 py-0.5 rounded font-mono font-bold capitalize ${colorTheme === 'blue' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}`}>
+                  {colorTheme === 'blue' ? 'Dark Blue' : 'Dark Green'}
+                </span>
+              </button>
               <button onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')} className="text-left">
                 Language: {language.toUpperCase()}
               </button>
