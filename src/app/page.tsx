@@ -20,7 +20,7 @@ export default async function Home() {
   const { data: capabilities } = await supabase.from('capabilities').select('*').order('name');
 
   return (
-    <div className="space-y-32 pb-16">
+    <div className="pb-16">
       <Hero
         initialProfile={profile}
         initialStats={{
