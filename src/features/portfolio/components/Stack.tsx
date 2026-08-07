@@ -17,7 +17,7 @@ function CategoryEditor({ title, table, items, setItems, onChanged }: {
   const [newName, setNewName] = useState("");
   const [newLogo, setNewLogo] = useState("");
   const [uploadingAdd, setUploadingAdd] = useState(false);
-  
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<{ id?: string; name?: string; logo_url?: string }>({});
   const [uploadingEdit, setUploadingEdit] = useState(false);
@@ -120,7 +120,7 @@ function CategoryEditor({ title, table, items, setItems, onChanged }: {
           className="w-full px-3 py-1.5 rounded-md border border-input bg-background text-xs outline-none focus:ring-1 focus:ring-foreground"
           placeholder={`Add to ${title}...`}
         />
-        
+
         <div className="flex items-center gap-2">
           <label className="cursor-pointer flex-1 bg-background text-foreground px-2.5 py-1.5 text-xs font-medium rounded-md text-center hover:bg-muted truncate border border-border flex items-center justify-center gap-1.5">
             <Upload className="w-3.5 h-3.5 text-muted-foreground" />

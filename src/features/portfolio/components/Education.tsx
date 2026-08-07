@@ -154,13 +154,13 @@ export function Education({ initialEducations = [] }: { initialEducations?: any[
 
       {editingId && (
         <div className="bg-card p-6 rounded-xl border border-border shadow-xl mb-12">
-          <EducationForm 
-            formData={formData} 
-            setFormData={setFormData} 
-            handleSave={handleSave} 
-            handleCancel={() => setEditingId(null)} 
+          <EducationForm
+            formData={formData}
+            setFormData={setFormData}
+            handleSave={handleSave}
+            handleCancel={() => setEditingId(null)}
             loading={loading}
-            validationError={validationError} 
+            validationError={validationError}
           />
         </div>
       )}
@@ -175,7 +175,7 @@ export function Education({ initialEducations = [] }: { initialEducations?: any[
             const schoolName = language === 'vi' && edu.school_vi ? edu.school_vi : edu.school;
             const degreeName = language === 'vi' && edu.degree_vi ? edu.degree_vi : edu.degree;
             const majorName = language === 'vi' && edu.major_vi ? edu.major_vi : edu.major;
-            
+
             const rawDescription = language === 'vi' && edu.description_vi ? edu.description_vi : edu.description;
             const showDescription = hasHtmlContent(rawDescription);
 
@@ -222,7 +222,7 @@ export function Education({ initialEducations = [] }: { initialEducations?: any[
 
                         {/* Chevron Toggle Button - ONLY rendered if description exists */}
                         {showDescription && (
-                          <button 
+                          <button
                             onClick={() => toggleExpand(edu.id)}
                             className="p-1 text-muted-foreground hover:text-foreground transition-colors"
                             title={isExpanded ? "Collapse" : "Expand"}
@@ -247,9 +247,8 @@ export function Education({ initialEducations = [] }: { initialEducations?: any[
                     {/* Description / Content (Only rendered if present, max 5 lines unless expanded) */}
                     {showDescription && (
                       <div
-                        className={`text-sm text-muted-foreground/90 leading-relaxed mb-3 transition-all [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1.5 ${
-                          isExpanded ? 'line-clamp-none' : 'line-clamp-5'
-                        }`}
+                        className={`text-sm text-muted-foreground/90 leading-relaxed mb-3 transition-all [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1.5 ${isExpanded ? 'line-clamp-none' : 'line-clamp-5'
+                          }`}
                         dangerouslySetInnerHTML={{ __html: rawDescription }}
                       />
                     )}
@@ -315,31 +314,31 @@ function EducationForm({ formData, setFormData, handleSave, handleCancel, loadin
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block">School / University (EN) *</label>
-            <input 
-              value={formData.school || ""} 
-              onChange={e => setFormData({ ...formData, school: e.target.value })} 
-              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" 
-              placeholder="e.g. FPT University" 
+            <input
+              value={formData.school || ""}
+              onChange={e => setFormData({ ...formData, school: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
+              placeholder="e.g. FPT University"
             />
           </div>
 
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block">Degree (EN)</label>
-            <input 
-              value={formData.degree || ""} 
-              onChange={e => setFormData({ ...formData, degree: e.target.value })} 
-              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" 
-              placeholder="e.g. Bachelor's degree" 
+            <input
+              value={formData.degree || ""}
+              onChange={e => setFormData({ ...formData, degree: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
+              placeholder="e.g. Bachelor's degree"
             />
           </div>
 
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block">Major / Field of Study (EN)</label>
-            <input 
-              value={formData.major || ""} 
-              onChange={e => setFormData({ ...formData, major: e.target.value })} 
-              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" 
-              placeholder="e.g. Software Engineering" 
+            <input
+              value={formData.major || ""}
+              onChange={e => setFormData({ ...formData, major: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
+              placeholder="e.g. Software Engineering"
             />
           </div>
         </div>
@@ -351,31 +350,31 @@ function EducationForm({ formData, setFormData, handleSave, handleCancel, loadin
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block">School / University (VI)</label>
-            <input 
-              value={formData.school_vi || ""} 
-              onChange={e => setFormData({ ...formData, school_vi: e.target.value })} 
-              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" 
-              placeholder="e.g. Đại học FPT" 
+            <input
+              value={formData.school_vi || ""}
+              onChange={e => setFormData({ ...formData, school_vi: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
+              placeholder="e.g. Đại học FPT"
             />
           </div>
 
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block">Degree (VI)</label>
-            <input 
-              value={formData.degree_vi || ""} 
-              onChange={e => setFormData({ ...formData, degree_vi: e.target.value })} 
-              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" 
-              placeholder="e.g. Cử nhân" 
+            <input
+              value={formData.degree_vi || ""}
+              onChange={e => setFormData({ ...formData, degree_vi: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
+              placeholder="e.g. Cử nhân"
             />
           </div>
 
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block">Major / Field of Study (VI)</label>
-            <input 
-              value={formData.major_vi || ""} 
-              onChange={e => setFormData({ ...formData, major_vi: e.target.value })} 
-              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" 
-              placeholder="e.g. Kỹ thuật phần mềm" 
+            <input
+              value={formData.major_vi || ""}
+              onChange={e => setFormData({ ...formData, major_vi: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
+              placeholder="e.g. Kỹ thuật phần mềm"
             />
           </div>
         </div>
@@ -387,20 +386,20 @@ function EducationForm({ formData, setFormData, handleSave, handleCancel, loadin
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block">Start Date</label>
-            <input 
-              type="date" 
-              value={formData.start_date || ""} 
-              onChange={e => setFormData({ ...formData, start_date: e.target.value })} 
-              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" 
+            <input
+              type="date"
+              value={formData.start_date || ""}
+              onChange={e => setFormData({ ...formData, start_date: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
             />
           </div>
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block">End Date</label>
-            <input 
-              type="date" 
-              value={formData.end_date || ""} 
-              onChange={e => setFormData({ ...formData, end_date: e.target.value })} 
-              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" 
+            <input
+              type="date"
+              value={formData.end_date || ""}
+              onChange={e => setFormData({ ...formData, end_date: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
             />
           </div>
         </div>
@@ -412,17 +411,17 @@ function EducationForm({ formData, setFormData, handleSave, handleCancel, loadin
         <div className="grid grid-cols-1 gap-4">
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Description (EN)</label>
-            <RichTextEditor 
-              value={formData.description || ""} 
-              onChange={html => setFormData({ ...formData, description: html })} 
+            <RichTextEditor
+              value={formData.description || ""}
+              onChange={html => setFormData({ ...formData, description: html })}
             />
           </div>
 
           <div>
             <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Description (VI)</label>
-            <RichTextEditor 
-              value={formData.description_vi || ""} 
-              onChange={html => setFormData({ ...formData, description_vi: html })} 
+            <RichTextEditor
+              value={formData.description_vi || ""}
+              onChange={html => setFormData({ ...formData, description_vi: html })}
             />
           </div>
         </div>
@@ -433,11 +432,11 @@ function EducationForm({ formData, setFormData, handleSave, handleCancel, loadin
         <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Technologies & Skills</span>
         <div>
           <label className="text-[10px] font-semibold text-muted-foreground block">Tech Stack / Skills (Comma-separated)</label>
-          <input 
-            value={formData.tech_stack_input || ""} 
-            onChange={e => setFormData({ ...formData, tech_stack_input: e.target.value })} 
-            className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" 
-            placeholder="e.g. C++, Java, Data Structures, Algorithms, System Design" 
+          <input
+            value={formData.tech_stack_input || ""}
+            onChange={e => setFormData({ ...formData, tech_stack_input: e.target.value })}
+            className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
+            placeholder="e.g. C++, Java, Data Structures, Algorithms, System Design"
           />
         </div>
       </div>
