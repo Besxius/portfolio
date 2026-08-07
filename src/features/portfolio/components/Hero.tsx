@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useAppContext } from "@/utils/providers";
 import { supabase } from "@/lib/supabase";
 import { Loader2, Edit2, Check, X, Mail, Facebook, Linkedin, Download, MapPin, Code2, Briefcase, Github, Instagram, Volume2, Link as LinkIcon, Phone, Clock, User, MessageSquare, Youtube, Twitter, Activity, Grid, Terminal, FolderArchive, FolderOpen } from "lucide-react";
+import { useTheme } from "next-themes";
 import LogoLoop from "@/components/ui/logo-loop";
 import SplitFlapText from "@/components/ui/split-flap-text";
 import { TLMarkIsometric } from "@/components/ui/tl-mark-isometric";
@@ -12,7 +13,20 @@ import SpecularButton from "@/components/ui/specular-button";
 
 export function Hero({ initialProfile, initialStats }: { initialProfile: any, initialStats?: any }) {
   const { t, isAdmin, language, colorTheme } = useAppContext();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = !mounted || resolvedTheme === "dark";
   const accentColor = colorTheme === "blue" ? "#38bdf8" : "#34d399";
+
+  const specularBaseColor = isDark ? "#3f3f46" : "#a1a1aa";
+  const specularLineColor = isDark ? "#ffffff" : "#18181b";
+  const specularTextColor = isDark ? "#f8fafc" : "#09090b";
+  const specularTintOpacity = isDark ? 0.12 : 0.22;
 
   const defaultProfile = {
     full_name: "Le Duc Trong",
@@ -264,8 +278,8 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
                         <label
                           key={option.value}
                           className={`cursor-pointer px-3 py-1.5 rounded-md border text-xs font-mono transition-all flex items-center gap-2 select-none ${(formData.gender || "he/him") === option.value
-                              ? "border-foreground bg-foreground/10 text-foreground font-semibold shadow-sm"
-                              : "border-border bg-background hover:bg-muted text-muted-foreground"
+                            ? "border-foreground bg-foreground/10 text-foreground font-semibold shadow-sm"
+                            : "border-border bg-background hover:bg-muted text-muted-foreground"
                             }`}
                         >
                           <input
@@ -449,19 +463,23 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
                   radius={8}
                   autoAnimate={true}
                   speed={0.4}
-                  baseColor="#3f3f46"
-                  lineColor="#ffffff"
+                  baseColor={specularBaseColor}
+                  lineColor={specularLineColor}
+                  textColor={specularTextColor}
                   tint={accentColor}
-                  tintOpacity={0.12}
+                  tintOpacity={specularTintOpacity}
                   onClick={() => setShowCvModal(true)}
-                  className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider px-4 py-2.5"
+                  className={`flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider px-4 py-2.5 shadow-sm border transition-all ${isDark
+                    ? "border-white/10 hover:border-white/25 text-slate-100"
+                    : "border-black/15 hover:border-black/35 text-slate-900 bg-white/80"
+                    }`}
                 >
                   <span>CV / Resume</span>
                 </SpecularButton>
               </div>
             </div>
 
-            {/* Split Flap Board (Prominent 1.5x Display - Contribution Graph Removed) */}
+            {/* Split Flap Board (Prominent 1.5x Display - Theme Optimized) */}
             <div className="border-t border-border/50 p-6 md:p-8 flex flex-col gap-5 bg-card/30">
               <div className="flex items-center justify-between border-b border-border/40 pb-3">
                 <span className="text-xs font-bold uppercase tracking-widest text-foreground/80 flex items-center gap-2 font-mono">
@@ -474,7 +492,10 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
                 </span>
               </div>
 
-              <div className="py-10 px-4 md:px-8 bg-background/90 rounded-xl border border-border/60 flex flex-col items-center justify-center overflow-x-auto min-h-[180px] shadow-inner">
+              <div className={`py-10 px-4 md:px-8 rounded-xl border flex flex-col items-center justify-center overflow-x-auto min-h-[180px] shadow-inner transition-colors duration-200 ${isDark
+                ? "bg-background/90 border-border/60"
+                : "bg-slate-100/90 border-slate-300/80"
+                }`}>
                 <SplitFlapText
                   words={[
                     'LE DUC TRONG',
@@ -484,6 +505,8 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
                     'AVAILABLE NOW',
                     'CLEAN ARCHITECTURE'
                   ]}
+                  tileColor={isDark ? "#0f172a" : "#18181b"}
+                  textColor="#ffffff"
                   fontSize="clamp(28px, 5.2vw, 54px)"
                   gap={8}
                   tileRadius={8}
