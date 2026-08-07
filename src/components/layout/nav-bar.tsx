@@ -49,21 +49,14 @@ export function Navbar() {
             <a href="#" className="hover:text-foreground transition-colors">{t.nav.home}</a>
             <a href="#work" className="hover:text-foreground transition-colors">{t.nav.work}</a>
             <a href="#projects" className="hover:text-foreground transition-colors">{t.nav.experience}</a>
-            <a href="#skills" className="hover:text-foreground transition-colors">{t.nav.skills}</a>
+            <a href="#stack" className="hover:text-foreground transition-colors">{t.nav.skills}</a>
           </div>
 
           {/* Controls (Right) */}
           <div className="hidden md:flex items-center gap-3">
             <div className="flex items-center gap-2 text-muted-foreground border border-border rounded-md px-2 py-1 text-xs">
               <Search className="w-3.5 h-3.5" />
-              <Command className="w-3 h-3" />
-              <span>K</span>
             </div>
-
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-              <Github className="w-4 h-4" />
-              <span>2.2k</span>
-            </a>
 
             <div className="h-4 w-px bg-border mx-1"></div>
 
@@ -108,10 +101,10 @@ export function Navbar() {
             <a href="#" onClick={() => setIsOpen(false)}>{t.nav.home}</a>
             <a href="#work" onClick={() => setIsOpen(false)}>{t.nav.work}</a>
             <a href="#projects" onClick={() => setIsOpen(false)}>{t.nav.experience}</a>
-            <a href="#skills" onClick={() => setIsOpen(false)}>{t.nav.skills}</a>
+            <a href="#stack" onClick={() => setIsOpen(false)}>{t.nav.skills}</a>
             <div className="flex flex-col gap-3 pt-4 border-t border-border mt-2">
-              <button 
-                onClick={() => setColorTheme(colorTheme === 'blue' ? 'green' : 'blue')} 
+              <button
+                onClick={() => setColorTheme(colorTheme === 'blue' ? 'green' : 'blue')}
                 className="text-left flex items-center justify-between"
               >
                 <span className="flex items-center gap-2">

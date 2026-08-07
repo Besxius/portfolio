@@ -10,6 +10,7 @@ import SplitFlapText from "@/components/ui/split-flap-text";
 import { TLMarkIsometric } from "@/components/ui/tl-mark-isometric";
 import { TLMarkLightRays } from "@/components/ui/tl-mark-light-rays";
 import SpecularButton from "@/components/ui/specular-button";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 
 export function Hero({ initialProfile, initialStats }: { initialProfile: any, initialStats?: any }) {
   const { t, isAdmin, language, colorTheme } = useAppContext();
@@ -167,154 +168,175 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
       )}
 
       {isEditing ? (
-        <div className="space-y-6 max-w-5xl bg-card p-8 rounded-xl border border-border shadow-2xl mx-auto w-full z-10 font-sans">
-          <div className="flex justify-between border-b border-border pb-4 items-center">
-            <h3 className="font-bold text-xl font-mono text-foreground flex items-center gap-2">
-              <Edit2 className="w-5 h-5 text-primary" /> Edit Profile Data
-            </h3>
+        <div className="space-y-6 max-w-4xl bg-card p-6 md:p-8 rounded-xl border border-border shadow-2xl mx-auto w-full z-10 font-sans">
+          <div className="flex justify-between border-b border-border pb-3 items-center">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Edit Profile Data
+            </span>
             <span className="text-xs text-muted-foreground font-mono">Admin Mode</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Left Column: Form Fields with explicit Labels/Tags */}
-            <div className="space-y-5">
-              <div className="space-y-1">
-                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Full Name</span>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-[10px] text-muted-foreground">English Name</label>
-                    <input value={formData.full_name || ""} onChange={e => setFormData({ ...formData, full_name: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" placeholder="English Name" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] text-muted-foreground">Vietnamese Name</label>
-                    <input value={formData.full_name_vi || ""} onChange={e => setFormData({ ...formData, full_name_vi: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" placeholder="Vietnamese Name" />
-                  </div>
+          <div className="space-y-6">
+            {/* Section 1: English Basic Info */}
+            <div className="space-y-3">
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Basic Information (EN)</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Full Name (EN)</label>
+                  <input value={formData.full_name || ""} onChange={e => setFormData({ ...formData, full_name: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none" placeholder="English Name" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Professional Title (EN)</label>
+                  <input value={formData.title || ""} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none" placeholder="Professional Title (EN)" />
                 </div>
               </div>
+            </div>
 
-              <div className="space-y-1">
-                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Professional Title</span>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-[10px] text-muted-foreground">Title (EN)</label>
-                    <input value={formData.title || ""} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" placeholder="Title (EN)" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] text-muted-foreground">Title (VI)</label>
-                    <input value={formData.title_vi || ""} onChange={e => setFormData({ ...formData, title_vi: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" placeholder="Title (VI)" />
-                  </div>
+            {/* Section 2: Vietnamese Information */}
+            <div className="border-t border-border pt-4 space-y-3">
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Vietnamese Information (VI)</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Full Name (VI)</label>
+                  <input value={formData.full_name_vi || ""} onChange={e => setFormData({ ...formData, full_name_vi: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none" placeholder="Vietnamese Name" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Professional Title (VI)</label>
+                  <input value={formData.title_vi || ""} onChange={e => setFormData({ ...formData, title_vi: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none" placeholder="Professional Title (VI)" />
                 </div>
               </div>
+            </div>
 
-              <div className="space-y-3">
-                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Biography</span>
-                <div className="flex flex-col gap-3">
-                  <div>
-                    <label className="text-[10px] font-semibold text-muted-foreground">Bio (EN) — English Biography</label>
-                    <textarea value={formData.bio || ""} onChange={e => setFormData({ ...formData, bio: e.target.value })} className="w-full px-3.5 py-2.5 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none h-32 mt-1 font-sans leading-relaxed" placeholder="Bio (EN)" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-semibold text-muted-foreground">Bio (VI) — Vietnamese Biography</label>
-                    <textarea value={formData.bio_vi || ""} onChange={e => setFormData({ ...formData, bio_vi: e.target.value })} className="w-full px-3.5 py-2.5 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none h-32 mt-1 font-sans leading-relaxed" placeholder="Bio (VI)" />
-                  </div>
+            {/* Section 3: Biography */}
+            <div className="border-t border-border pt-4 space-y-3">
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Biography</span>
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Bio (EN) — English Biography</label>
+                  <RichTextEditor
+                    value={formData.bio || ""}
+                    onChange={html => setFormData({ ...formData, bio: html })}
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Bio (VI) — Vietnamese Biography</label>
+                  <RichTextEditor
+                    value={formData.bio_vi || ""}
+                    onChange={html => setFormData({ ...formData, bio_vi: html })}
+                  />
                 </div>
               </div>
+            </div>
 
-              <div className="border-t border-border pt-4 space-y-3">
-                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Contact & Social Links</span>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-[10px] text-muted-foreground">Email</label>
-                    <input type="email" value={formData.email || ""} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" placeholder="Email" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] text-muted-foreground">GitHub URL</label>
-                    <input value={formData.github_url || ""} onChange={e => setFormData({ ...formData, github_url: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" placeholder="GitHub URL" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] text-muted-foreground">LinkedIn URL</label>
-                    <input value={formData.linkedin_url || ""} onChange={e => setFormData({ ...formData, linkedin_url: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" placeholder="LinkedIn URL" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] text-muted-foreground">Facebook URL</label>
-                    <input value={formData.facebook_url || ""} onChange={e => setFormData({ ...formData, facebook_url: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1" placeholder="Facebook URL" />
-                  </div>
+            {/* Section 4: Contact & Social Links */}
+            <div className="border-t border-border pt-4 space-y-3">
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Contact & Social Links</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Email</label>
+                  <input type="email" value={formData.email || ""} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none" placeholder="Email" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">GitHub URL</label>
+                  <input value={formData.github_url || ""} onChange={e => setFormData({ ...formData, github_url: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none" placeholder="GitHub URL" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">LinkedIn URL</label>
+                  <input value={formData.linkedin_url || ""} onChange={e => setFormData({ ...formData, linkedin_url: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none" placeholder="LinkedIn URL" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Facebook URL</label>
+                  <input value={formData.facebook_url || ""} onChange={e => setFormData({ ...formData, facebook_url: e.target.value })} className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none" placeholder="Facebook URL" />
                 </div>
               </div>
+            </div>
 
-              <div className="border-t border-border pt-4 space-y-3">
-                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Location & Personal Details</span>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-[10px] text-muted-foreground">Location / Country</label>
-                    <input
-                      list="country-options"
-                      value={formData.location || ""}
-                      onChange={e => setFormData({ ...formData, location: e.target.value })}
-                      className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none mt-1"
-                      placeholder="e.g. Vietnam / Remote"
-                    />
-                    <datalist id="country-options">
-                      <option value="Vietnam" />
-                      <option value="Vietnam / Remote" />
-                      <option value="United States" />
-                      <option value="Japan" />
-                      <option value="Singapore" />
-                      <option value="Australia" />
-                      <option value="United Kingdom" />
-                      <option value="Canada" />
-                      <option value="Germany" />
-                      <option value="Remote / Worldwide" />
-                    </datalist>
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Gender / Pronouns</label>
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      {[
-                        { label: "he/him", value: "he/him" },
-                        { label: "she/her", value: "she/her" },
-                        { label: "they/them", value: "they/them" }
-                      ].map(option => (
-                        <label
-                          key={option.value}
-                          className={`cursor-pointer px-3 py-1.5 rounded-md border text-xs font-mono transition-all flex items-center gap-2 select-none ${(formData.gender || "he/him") === option.value
-                            ? "border-foreground bg-foreground/10 text-foreground font-semibold shadow-sm"
-                            : "border-border bg-background hover:bg-muted text-muted-foreground"
-                            }`}
-                        >
-                          <input
-                            type="radio"
-                            name="gender-radio"
-                            value={option.value}
-                            checked={(formData.gender || "he/him") === option.value}
-                            onChange={e => setFormData({ ...formData, gender: e.target.value })}
-                            className="accent-foreground w-3.5 h-3.5 cursor-pointer"
-                          />
-                          <span>{option.label}</span>
-                        </label>
-                      ))}
-                    </div>
+            {/* Section 5: Location & Personal Details */}
+            <div className="border-t border-border pt-4 space-y-3">
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Location & Personal Details</span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Location / Country</label>
+                  <input
+                    list="country-options"
+                    value={formData.location || ""}
+                    onChange={e => setFormData({ ...formData, location: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none"
+                    placeholder="e.g. Vietnam / Remote"
+                  />
+                  <datalist id="country-options">
+                    <option value="Vietnam" />
+                    <option value="Vietnam / Remote" />
+                    <option value="United States" />
+                    <option value="Japan" />
+                    <option value="Singapore" />
+                    <option value="Australia" />
+                    <option value="United Kingdom" />
+                    <option value="Canada" />
+                    <option value="Germany" />
+                    <option value="Remote / Worldwide" />
+                  </datalist>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Years of Experience</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="50"
+                    value={formData.years_of_experience ?? formData.experience_years ?? 3}
+                    onChange={e => setFormData({ ...formData, years_of_experience: Number(e.target.value), experience_years: Number(e.target.value) })}
+                    className="w-full px-3.5 py-2 rounded-md border border-input bg-background hover:bg-muted focus:ring-1 focus:ring-foreground text-sm outline-none"
+                    placeholder="e.g. 3"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-semibold text-muted-foreground block mb-1">Gender / Pronouns</label>
+                  <div className="flex flex-wrap gap-2 pt-0.5">
+                    {[
+                      { label: "he/him", value: "he/him" },
+                      { label: "she/her", value: "she/her" },
+                      { label: "they/them", value: "they/them" }
+                    ].map(option => (
+                      <label
+                        key={option.value}
+                        className={`cursor-pointer px-3 py-1.5 rounded-md border text-xs font-mono transition-all flex items-center gap-2 select-none ${(formData.gender || "he/him") === option.value
+                          ? "border-foreground bg-foreground/10 text-foreground font-semibold shadow-sm"
+                          : "border-border bg-background hover:bg-muted text-muted-foreground"
+                          }`}
+                      >
+                        <input
+                          type="radio"
+                          name="gender-radio"
+                          value={option.value}
+                          checked={(formData.gender || "he/him") === option.value}
+                          onChange={e => setFormData({ ...formData, gender: e.target.value })}
+                          className="accent-foreground w-3.5 h-3.5 cursor-pointer"
+                        />
+                        <span>{option.label}</span>
+                      </label>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Media Uploads & Avatar Position Adjustments */}
-            <div className="space-y-6">
+            {/* Section 6: Avatar Configuration (MOVED TO BOTTOM) */}
+            <div className="border-t border-border pt-4 space-y-3">
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Avatar Configuration</span>
               <div className="flex flex-col items-center p-6 bg-background/50 rounded-xl border border-border space-y-4">
-                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider self-start">Avatar Configuration</span>
-
                 <label className="cursor-pointer bg-foreground text-background px-6 py-2.5 rounded-md text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity">
                   <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                   {uploadingImage ? <Loader2 className="w-4 h-4 animate-spin" /> : "Upload New Avatar"}
                 </label>
 
                 {formData.avatar_url && (
-                  <div className="w-full flex flex-col items-center bg-card p-6 rounded-xl border border-border space-y-4">
-                    <div className="w-36 h-36 rounded-full border-2 border-border relative bg-muted cursor-grab active:cursor-grabbing overflow-hidden shadow-inner group"
+                  <div className="w-full flex flex-col md:flex-row items-center gap-6 bg-card p-6 rounded-xl border border-border">
+                    <div className="w-36 h-36 rounded-full border-2 border-border relative bg-muted cursor-grab active:cursor-grabbing overflow-hidden shadow-inner group shrink-0"
                       onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={handlePointerUp}>
                       <img src={formData.avatar_url} draggable="false" className="w-full h-full object-cover pointer-events-none select-none"
-                        style={{ objectPosition: `${formData.avatar_x ?? 50}% ${formData.avatar_y ?? 50}%`, transform: `scale(${formData.avatar_scale || 1})` }} />
+                        style={{ objectPosition: `${formData.avatar_x ?? 50}% ${formData.avatar_y ?? 50}%`, transform: `scale(${formData.avatar_scale || 1})` }} alt="Avatar preview" />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] font-mono text-white text-center p-2 pointer-events-none">
                         Drag to position avatar
                       </div>
@@ -345,38 +367,43 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
 
-                {/* CV PDF Upload & Status Tag */}
-                <div className="w-full pt-4 border-t border-border flex flex-col items-center space-y-3">
-                  <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider self-start">Curriculum Vitae (PDF)</span>
+            {/* Section 7: Curriculum Vitae (PDF) Upload (MOVED TO BOTTOM) */}
+            <div className="border-t border-border pt-4 space-y-3">
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Curriculum Vitae (PDF)</span>
+              <div className="p-4 bg-background/50 rounded-xl border border-border flex flex-col items-center space-y-3">
+                <label className="cursor-pointer bg-card text-foreground border border-border px-6 py-2.5 rounded-md text-sm font-medium flex items-center gap-2 hover:bg-muted transition-colors">
+                  <input type="file" accept=".pdf,application/pdf" onChange={handleCVUpload} className="hidden" />
+                  {uploadingCV ? <Loader2 className="w-4 h-4 animate-spin" /> : "Upload New CV (PDF)"}
+                </label>
 
-                  <label className="cursor-pointer bg-card text-foreground border border-border px-6 py-2.5 rounded-md text-sm font-medium flex items-center gap-2 hover:bg-muted transition-colors">
-                    <input type="file" accept=".pdf,application/pdf" onChange={handleCVUpload} className="hidden" />
-                    {uploadingCV ? <Loader2 className="w-4 h-4 animate-spin" /> : "Upload New CV (PDF)"}
-                  </label>
-
-                  {formData.cv_url && (
-                    <div className="w-full p-3 bg-muted/50 rounded-lg border border-border/80 flex items-center gap-3">
-                      <FolderOpen className="w-5 h-5 text-primary shrink-0" />
-                      <div className="flex flex-col overflow-hidden text-xs">
-                        <span className="font-semibold text-foreground truncate">
-                          {formData.cv_url.split('/').pop()?.split('?')[0] || "document.pdf"}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground truncate">PDF File Ready</span>
-                      </div>
-                      <a href={formData.cv_url} target="_blank" rel="noreferrer" className="ml-auto text-[10px] underline text-muted-foreground hover:text-foreground">
-                        Preview
-                      </a>
+                {formData.cv_url && (
+                  <div className="w-full p-3 bg-muted/50 rounded-lg border border-border/80 flex items-center gap-3">
+                    <FolderOpen className="w-5 h-5 text-primary shrink-0" />
+                    <div className="flex flex-col overflow-hidden text-xs">
+                      <span className="font-semibold text-foreground truncate">
+                        {formData.cv_url.split('/').pop()?.split('?')[0] || "document.pdf"}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground truncate">PDF File Ready</span>
                     </div>
-                  )}
-                </div>
+                    <a href={formData.cv_url} target="_blank" rel="noreferrer" className="ml-auto text-[10px] underline text-muted-foreground hover:text-foreground">
+                      Preview
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <div className="flex justify-end gap-4 pt-6 border-t border-border mt-8">
-            <button onClick={() => setIsEditing(false)} className="px-6 py-2 border border-border rounded-md font-medium text-sm">Cancel</button>
-            <button onClick={handleSave} disabled={loading} className="px-8 py-2 bg-foreground text-background font-medium rounded-md flex items-center text-sm">
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save Profile"}
+
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-3 pt-5 border-t border-border mt-8">
+            <button onClick={() => setIsEditing(false)} className="px-4 py-2 border border-border rounded-md text-sm font-medium hover:bg-muted transition-colors">
+              Cancel
+            </button>
+            <button onClick={handleSave} disabled={loading} className="px-6 py-2 bg-foreground text-background text-sm font-medium rounded-md flex items-center hover:opacity-90 transition-opacity">
+              {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : "Save Profile"}
             </button>
           </div>
         </div>
@@ -522,9 +549,10 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
             <h3 className="font-serif italic text-3xl md:text-4xl text-foreground mb-8">Good evening</h3>
 
             {displayBio ? (
-              <div className="space-y-6 leading-relaxed whitespace-pre-wrap text-base md:text-lg pl-6 border-l-2 border-primary/40 text-foreground/90 font-sans tracking-wide">
-                {displayBio}
-              </div>
+              <div
+                className="space-y-4 leading-relaxed text-base md:text-lg pl-6 border-l-2 border-primary/40 text-foreground/90 font-sans tracking-wide [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1.5"
+                dangerouslySetInnerHTML={{ __html: displayBio }}
+              />
             ) : (
               <ul className="space-y-4 list-disc pl-6 leading-relaxed text-base md:text-lg">
                 <li>I'm <span className="text-foreground font-semibold">{displayFullName}</span> — a {displayTitle} with a passion for clean code, solid architecture, and pixel-perfect UI.</li>

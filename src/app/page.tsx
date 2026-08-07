@@ -3,7 +3,7 @@ import { Hero } from "@/features/portfolio/components/Hero";
 import { Projects } from "@/features/portfolio/components/Projects";
 import { Work } from "@/features/portfolio/components/Work";
 import { Education } from "@/features/portfolio/components/Education";
-import { Skills } from "@/features/portfolio/components/Skills";
+import { Stack } from "@/features/portfolio/components/Stack";
 import { Contact } from "@/features/portfolio/components/Contact";
 
 export const revalidate = 0;
@@ -13,30 +13,26 @@ export default async function Home() {
   const profile = profiles && profiles.length > 0 ? profiles[0] : null;
   const { data: projects } = await supabase.from('projects').select('*').order('display_order', { ascending: true });
   const { data: works } = await supabase.from('work_history').select('*').order('start_date', { ascending: false });
+  const { data: educations } = await supabase.from('education').select('*').order('start_date', { ascending: false });
 
   const { data: languages } = await supabase.from('languages').select('*').order('name');
-  const { data: frameworks } = await supabase.from('frameworks').select('*').order('name');
-  const { data: devTools } = await supabase.from('dev_tools').select('*').order('name');
-  const { data: capabilities } = await supabase.from('capabilities').select('*').order('name');
+  const { data: frontend } = await supabase.from('frontend').select('*').order('name');
+  const { data: backend } = await supabase.from('backend').select('*').order('name');
+  const { data: workflowAi } = await supabase.from('workflow_ai').select('*').order('name');
+  const { data: codingTools } = await supabase.from('coding_tools').select('*').order('name');
 
   return (
     <div className="pb-16">
-      <Hero
-        initialProfile={profile}
-        initialStats={{
-          languages: languages?.length || 0,
-          frameworks: frameworks?.length || 0,
-          devTools: devTools?.length || 0
-        }}
-      />
+      <Hero initialProfile={profile} />
       <Work initialWorks={works || []} />
-      <Education />
+      <Education initialEducations={educations || []} />
       <Projects initialProjects={projects || []} />
-      <Skills
+      <Stack
         initialLanguages={languages || []}
-        initialFrameworks={frameworks || []}
-        initialDevTools={devTools || []}
-        initialCapabilities={capabilities || []}
+        initialFrontend={frontend || []}
+        initialBackend={backend || []}
+        initialWorkflowAi={workflowAi || []}
+        initialCodingTools={codingTools || []}
       />
       <Contact initialProfile={profile} />
     </div>
