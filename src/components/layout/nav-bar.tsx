@@ -11,7 +11,17 @@ export function Navbar() {
   const { language, setLanguage, t, colorTheme, setColorTheme } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("hero");
   const [nameInfo, setNameInfo] = useState({ en: 'Le Duc Trong', vi: 'Lê Đức Trọng', avatar: '', x: 50, y: 50, scale: 1 });
+
+  const navItems = [
+    { id: "hero", href: "#hero", label: t.nav.home },
+    { id: "work", href: "#work", label: t.nav.work },
+    { id: "education", href: "#education", label: t.nav.education },
+    { id: "projects", href: "#projects", label: t.nav.projects },
+    { id: "stack", href: "#stack", label: t.nav.stack },
+    { id: "contact", href: "#contact", label: t.nav.contact },
+  ];
 
   useEffect(() => {
     supabase.from('profiles').select('full_name, full_name_vi, avatar_url, avatar_x, avatar_y, avatar_scale').limit(1).then(({ data }) => {
@@ -31,8 +41,53 @@ export function Navbar() {
       setIsScrolled(window.scrollY > 400);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Active section detection via IntersectionObserver
+    const sectionIds = ["hero", "work", "education", "projects", "stack", "contact"];
+    const handleObserver = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleObserver, {
+      rootMargin: "-20% 0px -55% 0px",
+      threshold: 0.1,
+    });
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace("#", "");
+    const el = document.getElementById(targetId);
+    if (el) {
+      const navHeight = 56;
+      const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - navHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+      setActiveSection(targetId);
+    } else if (href === "#hero" || href === "#") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setActiveSection("hero");
+    }
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -41,15 +96,37 @@ export function Navbar() {
 
           {/* Brand */}
           <div className="flex items-center gap-2 font-bold text-xl min-w-[120px]">
-            <span className="tracking-tighter">TRONGLE</span>
+            <a
+              href="#hero"
+              onClick={(e) => scrollToSection(e, "#hero")}
+              className="tracking-tighter hover:opacity-80 transition-opacity"
+            >
+              TRONGLE
+            </a>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">{t.nav.home}</a>
-            <a href="#work" className="hover:text-foreground transition-colors">{t.nav.work}</a>
-            <a href="#projects" className="hover:text-foreground transition-colors">{t.nav.experience}</a>
-            <a href="#stack" className="hover:text-foreground transition-colors">{t.nav.skills}</a>
+          <div className="hidden md:flex items-center gap-1 text-xs font-medium text-muted-foreground">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  onClick={(e) => scrollToSection(e, item.href)}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`relative px-3 py-1.5 rounded-md transition-all duration-200 ${isActive
+                      ? "text-foreground font-semibold bg-muted/70"
+                      : "hover:text-foreground hover:bg-muted/30"
+                    }`}
+                >
+                  {item.label}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-foreground rounded-full transition-all" />
+                  )}
+                </a>
+              );
+            })}
           </div>
 
           {/* Controls (Right) */}
@@ -97,11 +174,27 @@ export function Navbar() {
         </div>
 
         {isOpen && (
-          <div className="md:hidden p-4 bg-background border-b border-border flex flex-col gap-4 text-sm">
-            <a href="#" onClick={() => setIsOpen(false)}>{t.nav.home}</a>
-            <a href="#work" onClick={() => setIsOpen(false)}>{t.nav.work}</a>
-            <a href="#projects" onClick={() => setIsOpen(false)}>{t.nav.experience}</a>
-            <a href="#stack" onClick={() => setIsOpen(false)}>{t.nav.skills}</a>
+          <div className="md:hidden p-4 bg-background border-b border-border flex flex-col gap-2 text-sm">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  onClick={(e) => scrollToSection(e, item.href)}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`py-2 px-3 rounded-lg transition-colors flex items-center justify-between ${isActive
+                      ? "bg-muted/80 text-foreground font-semibold"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
+                    }`}
+                >
+                  <span>{item.label}</span>
+                  {isActive && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-foreground" />
+                  )}
+                </a>
+              );
+            })}
             <div className="flex flex-col gap-3 pt-4 border-t border-border mt-2">
               <button
                 onClick={() => setColorTheme(colorTheme === 'blue' ? 'green' : 'blue')}
@@ -144,3 +237,4 @@ export function Navbar() {
     </>
   );
 }
+

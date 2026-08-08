@@ -12,15 +12,15 @@ export const translations = {
     nav: {
       home: "Home",
       about: "About",
-      work: "Work",
-      experience: "Projects",
+      work: "Experience",
+      education: "Education",
       projects: "Projects",
-      skills: "Skills",
+      stack: "Stack",
       contact: "Contact"
     },
     sections: {
       projectsTitle: "Featured Projects",
-      skillsTitle: "Skills",
+      stackTitle: "Stack",
       contactTitle: "Contact",
       workTitle: "Work Experience",
       workDesc: "My professional career journey",
@@ -61,15 +61,15 @@ export const translations = {
     nav: {
       home: "Trang chủ",
       about: "Giới thiệu",
-      work: "Làm việc",
-      experience: "Dự án",
+      work: "Kinh nghiệm",
+      education: "Học vấn",
       projects: "Dự án",
-      skills: "Kỹ năng",
+      stack: "Stack",
       contact: "Liên hệ"
     },
     sections: {
       projectsTitle: "Dự Án Nổi Bật",
-      skillsTitle: "Kỹ Năng",
+      stackTitle: "Stack",
       contactTitle: "Liên Hệ Với Mình",
       workTitle: "Lịch Sử Làm Việc",
       workDesc: "Hành trình sự nghiệp chuyên nghiệp của tôi",

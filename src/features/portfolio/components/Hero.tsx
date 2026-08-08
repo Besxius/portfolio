@@ -160,7 +160,7 @@ export function Hero({ initialProfile, initialStats }: { initialProfile: any, in
   const displayBio = language === 'vi' ? (profile.bio_vi || profile.bio) : profile.bio;
 
   return (
-    <section className="pt-24 pb-12 relative group flex flex-col justify-center min-h-[85vh]">
+    <section id="hero" className="pt-24 pb-12 relative group flex flex-col justify-center min-h-[85vh]">
       {isAdmin && !isEditing && (
         <button onClick={() => { setFormData(profile); setIsEditing(true); }} className="absolute top-28 right-4 flex items-center gap-2 px-4 py-2 hover:bg-muted bg-card text-foreground border border-border rounded-md font-sans font-medium text-xs z-40 transition-colors">
           <Edit2 className="w-3.5 h-3.5" /> Edit Data
